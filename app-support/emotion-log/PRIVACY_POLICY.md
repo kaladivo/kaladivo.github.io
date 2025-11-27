@@ -70,10 +70,6 @@ Since we don't collect your data, there is nothing for us to delete, modify, or 
 
 We may update this Privacy Policy from time to time. We will notify you of any changes by updating the "Last Updated" date at the top of this policy.
 
-## Open Source
-
-Emotions Log is open source. You can review our code to verify our privacy practices.
-
 ## Contact Us
 
 If you have any questions about this Privacy Policy, please contact us at:
