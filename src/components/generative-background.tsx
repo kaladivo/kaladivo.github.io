@@ -3,6 +3,43 @@
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 
+class Particle {
+  x: number;
+  y: number;
+  size: number;
+  speedX: number;
+  speedY: number;
+  opacity: number;
+
+  constructor(canvasWidth: number, canvasHeight: number) {
+    this.x = Math.random() * canvasWidth;
+    this.y = Math.random() * canvasHeight;
+    this.size = Math.random() * 2 + 0.5;
+    this.speedX = (Math.random() - 0.5) * 0.3;
+    this.speedY = (Math.random() - 0.5) * 0.3;
+    this.opacity = Math.random() * 0.5 + 0.1;
+  }
+
+  update(canvasWidth: number, canvasHeight: number) {
+    this.x += this.speedX;
+    this.y += this.speedY;
+
+    if (this.x < 0) this.x = canvasWidth;
+    if (this.x > canvasWidth) this.x = 0;
+    if (this.y < 0) this.y = canvasHeight;
+    if (this.y > canvasHeight) this.y = 0;
+  }
+
+  draw(ctx: CanvasRenderingContext2D, isDark: boolean) {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = isDark
+      ? `rgba(147, 112, 219, ${this.opacity})`
+      : `rgba(124, 58, 237, ${this.opacity * 0.5})`;
+    ctx.fill();
+  }
+}
+
 export function GenerativeBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -15,43 +52,6 @@ export function GenerativeBackground() {
 
     let animationId: number;
     let particles: Particle[] = [];
-
-    class Particle {
-      x: number;
-      y: number;
-      size: number;
-      speedX: number;
-      speedY: number;
-      opacity: number;
-
-      constructor(canvasWidth: number, canvasHeight: number) {
-        this.x = Math.random() * canvasWidth;
-        this.y = Math.random() * canvasHeight;
-        this.size = Math.random() * 2 + 0.5;
-        this.speedX = (Math.random() - 0.5) * 0.3;
-        this.speedY = (Math.random() - 0.5) * 0.3;
-        this.opacity = Math.random() * 0.5 + 0.1;
-      }
-
-      update(canvasWidth: number, canvasHeight: number) {
-        this.x += this.speedX;
-        this.y += this.speedY;
-
-        if (this.x < 0) this.x = canvasWidth;
-        if (this.x > canvasWidth) this.x = 0;
-        if (this.y < 0) this.y = canvasHeight;
-        if (this.y > canvasHeight) this.y = 0;
-      }
-
-      draw(ctx: CanvasRenderingContext2D, isDark: boolean) {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = isDark
-          ? `rgba(147, 112, 219, ${this.opacity})`
-          : `rgba(124, 58, 237, ${this.opacity * 0.5})`;
-        ctx.fill();
-      }
-    }
 
     const resize = () => {
       canvas.width = window.innerWidth;
@@ -80,14 +80,14 @@ export function GenerativeBackground() {
 
           if (distance < maxDistance) {
             const opacity = (1 - distance / maxDistance) * 0.15;
-            ctx!.beginPath();
-            ctx!.strokeStyle = isDark
+            ctx.beginPath();
+            ctx.strokeStyle = isDark
               ? `rgba(147, 112, 219, ${opacity})`
               : `rgba(124, 58, 237, ${opacity * 0.5})`;
-            ctx!.lineWidth = 0.5;
-            ctx!.moveTo(particles[i].x, particles[i].y);
-            ctx!.lineTo(particles[j].x, particles[j].y);
-            ctx!.stroke();
+            ctx.lineWidth = 0.5;
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
           }
         }
       }
