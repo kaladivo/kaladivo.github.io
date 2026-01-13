@@ -4,6 +4,19 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { Mail, Github, Instagram } from "lucide-react";
 import { GenerativeBackground } from "@/components/generative-background";
+import { Typewriter } from "@/components/typewriter";
+
+const roles = [
+  "Tech Lead at Vexl",
+  "Developer",
+  "Frontman at Artific",
+  "Thinker",
+  "Musician",
+  "Problem Solver",
+  "Human",
+  "Thinkerer",
+  "Singer",
+];
 
 export function HeroSection() {
   return (
@@ -61,17 +74,14 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.7 }}
-          className="text-xl md:text-2xl text-muted-foreground mb-2"
+          className="text-xl md:text-2xl text-muted-foreground mb-2 h-8"
         >
-          Tech Lead at{" "}
-          <a
-            href="https://vexl.it"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-accent hover:underline underline-offset-4"
-          >
-            Vexl
-          </a>
+          <Typewriter
+            phrases={roles}
+            typingSpeed={80}
+            deletingSpeed={40}
+            pauseDuration={2500}
+          />
         </motion.p>
 
         <motion.p
