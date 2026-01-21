@@ -33,6 +33,12 @@ const projects: Project[] = [
       "Mood-tracking mobile app with analytics and visual calendar. All data stored locally on device for privacy.",
     url: "https://emotionslog.com",
   },
+  {
+    title: "Davenov CC Collection",
+    description:
+      "Open-source collection of slash commands and skills for Claude Code. Includes brainstorming tools, full-stack development expertise, and more.",
+    url: "https://github.com/kaladivo/davenov-cc-collection",
+  },
 ];
 
 function ProjectCard({
