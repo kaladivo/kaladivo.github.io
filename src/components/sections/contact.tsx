@@ -80,7 +80,7 @@ export function ContactSection() {
           className="text-center pt-8 border-t border-border"
         >
           <p className="text-sm text-muted-foreground flex items-center justify-center gap-1.5">
-            Made with <Heart className="w-4 h-4 text-accent" /> by David Novák
+            Made with <Heart className="w-4 h-4 text-accent" /> by Dejv
           </p>
           <p className="text-xs text-muted-foreground/60 mt-2">
             © {new Date().getFullYear()}
