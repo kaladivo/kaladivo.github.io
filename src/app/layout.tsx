@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import "highlight.js/styles/github-dark-dimmed.css";
 import { ThemeProvider } from "@/components/theme-provider";
 
 const inter = Inter({

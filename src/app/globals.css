@@ -135,3 +135,50 @@
 .parallax-slow {
   will-change: transform;
 }
+
+/* Blog prose customizations */
+.prose {
+  --tw-prose-body: hsl(var(--foreground));
+  --tw-prose-headings: hsl(var(--foreground));
+  --tw-prose-links: hsl(var(--accent));
+  --tw-prose-bold: hsl(var(--foreground));
+  --tw-prose-code: hsl(var(--foreground));
+  --tw-prose-pre-bg: hsl(var(--muted));
+  --tw-prose-pre-code: hsl(var(--foreground));
+  --tw-prose-quotes: hsl(var(--muted-foreground));
+  --tw-prose-quote-borders: hsl(var(--accent));
+  --tw-prose-counters: hsl(var(--muted-foreground));
+  --tw-prose-bullets: hsl(var(--muted-foreground));
+  --tw-prose-hr: hsl(var(--border));
+  --tw-prose-th-borders: hsl(var(--border));
+  --tw-prose-td-borders: hsl(var(--border));
+}
+
+.prose a {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: hsl(var(--accent) / 0.4);
+  transition: text-decoration-color 0.2s;
+}
+
+.prose a:hover {
+  text-decoration-color: hsl(var(--accent));
+}
+
+.prose :where(code):not(:where(pre code)) {
+  font-family: var(--font-jetbrains), monospace;
+  background: hsl(var(--muted));
+  padding: 0.15em 0.35em;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+}
+
+.prose pre {
+  font-family: var(--font-jetbrains), monospace;
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.75rem;
+}
+
+.prose pre code {
+  font-family: var(--font-jetbrains), monospace;
+}
