@@ -28,25 +28,33 @@ type HomeNavItem =
       href: string;
     };
 
-const homeNavItems: HomeNavItem[] = [
-  { kind: "section", id: "hero", label: "Home" },
-  { kind: "route", id: "blog", label: "Blog", href: "/blog" },
-  { kind: "section", id: "vexl", label: "Vexl" },
-  { kind: "section", id: "projects", label: "Projects" },
-  { kind: "section", id: "artific", label: "Artific" },
-  { kind: "section", id: "about", label: "About" },
-  { kind: "section", id: "contact", label: "Contact" },
-];
+function getHomeNavItems(showBlog: boolean): HomeNavItem[] {
+  return [
+    { kind: "section", id: "hero", label: "Home" },
+    ...(showBlog
+      ? ([{ kind: "route", id: "blog", label: "Blog", href: "/blog" }] as const)
+      : []),
+    { kind: "section", id: "vexl", label: "Vexl" },
+    { kind: "section", id: "projects", label: "Projects" },
+    { kind: "section", id: "artific", label: "Artific" },
+    { kind: "section", id: "about", label: "About" },
+    { kind: "section", id: "contact", label: "Contact" },
+  ];
+}
 
-const routeNavItems = [
-  { id: "home", label: "Home", href: "/" },
-  { id: "blog", label: "Blog", href: "/blog" },
-];
+function getRouteNavItems(showBlog: boolean) {
+  return [
+    { id: "home", label: "Home", href: "/" },
+    ...(showBlog ? [{ id: "blog", label: "Blog", href: "/blog" }] : []),
+  ];
+}
 
-const blogLinks = [
-  { label: "Home", href: "/" },
-  { label: "Blog", href: "/blog" },
-];
+function getBlogLinks(showBlog: boolean) {
+  return [
+    { label: "Home", href: "/" },
+    ...(showBlog ? [{ label: "Blog", href: "/blog" }] : []),
+  ];
+}
 
 function HamburgerIcon({ isOpen }: { isOpen: boolean }) {
   return (
@@ -78,8 +86,9 @@ function isRouteActive(pathname: string, href: string): boolean {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
-function BlogNavigation() {
+function BlogNavigation({ showBlog }: { showBlog: boolean }) {
   const pathname = usePathname() ?? "/";
+  const blogLinks = getBlogLinks(showBlog);
 
   return (
     <motion.nav
@@ -121,9 +130,11 @@ function BlogNavigation() {
   );
 }
 
-function HomeNavigation() {
+function HomeNavigation({ showBlog }: { showBlog: boolean }) {
   const pathname = usePathname() ?? "/";
   const isHomePage = pathname === "/";
+  const homeNavItems = getHomeNavItems(showBlog);
+  const routeNavItems = getRouteNavItems(showBlog);
 
   const [activeSection, setActiveSection] = useState("hero");
   const [isScrolled, setIsScrolled] = useState(false);
@@ -402,12 +413,14 @@ function HomeNavigation() {
 
 export function Navigation({
   variant = "home",
+  showBlog = true,
 }: {
   variant?: "home" | "blog";
+  showBlog?: boolean;
 }) {
   if (variant === "blog") {
-    return <BlogNavigation />;
+    return <BlogNavigation showBlog={showBlog} />;
   }
 
-  return <HomeNavigation />;
+  return <HomeNavigation showBlog={showBlog} />;
 }
