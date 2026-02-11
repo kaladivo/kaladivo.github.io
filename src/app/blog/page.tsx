@@ -11,10 +11,11 @@ export const metadata: Metadata = {
 
 export default async function BlogListPage() {
   const posts = await getAllPosts();
+  const hasPublishedPosts = posts.length > 0;
 
   return (
     <>
-      <Navigation variant="blog" />
+      <Navigation variant="blog" showBlog={hasPublishedPosts} />
       <main className="min-h-screen pt-24 pb-16">
         <div className="max-w-3xl mx-auto px-6">
           <header className="mb-12">

@@ -10,14 +10,15 @@ import { getLatestPosts } from "@/lib/blog";
 
 export default async function Home() {
   const latestPosts = await getLatestPosts(3);
+  const hasPublishedPosts = latestPosts.length > 0;
 
   return (
     <>
-      <Navigation />
+      <Navigation showBlog={hasPublishedPosts} />
       <main>
         <HeroSection />
         <VexlSection />
-        <BlogPreviewSection posts={latestPosts} />
+        {hasPublishedPosts && <BlogPreviewSection posts={latestPosts} />}
         <ProjectsSection />
         <ArtificSection />
         <AboutSection />

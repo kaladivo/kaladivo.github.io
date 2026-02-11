@@ -7,6 +7,7 @@ tags:
   - nextjs
   - markdown
   - static-site
+draft: true
 ---
 
 ## Why I picked static generation
