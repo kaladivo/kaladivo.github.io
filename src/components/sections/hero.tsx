@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
 import Image from "next/image";
 import { Mail, Github, Instagram } from "lucide-react";
 import { GenerativeBackground } from "@/components/generative-background";
@@ -27,25 +24,13 @@ export function HeroSection() {
       <GenerativeBackground />
 
       <div className="relative z-10 max-w-4xl mx-auto px-6 py-24 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="mb-8"
+        <div
+          className="mb-8 hero-fade-up"
+          style={{ animationDelay: "0.3s" }}
         >
           {/* Floating Photo */}
           <div className="relative inline-block">
-            <motion.div
-              animate={{
-                y: [0, -10, 0],
-              }}
-              transition={{
-                duration: 6,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-              className="relative"
-            >
+            <div className="relative hero-float">
               {/* Glow effect behind photo */}
               <div className="absolute inset-0 bg-accent/20 rounded-full blur-2xl scale-110" />
               <div className="relative w-40 h-40 md:w-48 md:h-48 rounded-full overflow-hidden border-4 border-background shadow-2xl">
@@ -57,24 +42,20 @@ export function HeroSection() {
                   priority
                 />
               </div>
-            </motion.div>
+            </div>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-          className="font-display text-5xl md:text-7xl font-bold tracking-tight mb-4"
+        <h1
+          className="hero-fade-up font-display text-5xl md:text-7xl font-bold tracking-tight mb-4"
+          style={{ animationDelay: "0.5s" }}
         >
           David Novák
-        </motion.h1>
+        </h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.7 }}
-          className="text-xl md:text-2xl text-muted-foreground mb-2 h-8"
+        <p
+          className="hero-fade-up text-xl md:text-2xl text-muted-foreground mb-2 h-8"
+          style={{ animationDelay: "0.7s" }}
         >
           <Typewriter
             phrases={roles}
@@ -82,23 +63,19 @@ export function HeroSection() {
             deletingSpeed={40}
             pauseDuration={2500}
           />
-        </motion.p>
+        </p>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.9 }}
-          className="font-mono text-sm text-muted-foreground mb-8"
+        <p
+          className="hero-fade-up font-mono text-sm text-muted-foreground mb-8"
+          style={{ animationDelay: "0.9s" }}
         >
           Building things that matter
-        </motion.p>
+        </p>
 
         {/* Social Links */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1.1 }}
-          className="flex items-center justify-center gap-4"
+        <div
+          className="hero-fade-up flex items-center justify-center gap-4"
+          style={{ animationDelay: "1.1s" }}
         >
           <a
             href="mailto:mail@davenov.com"
@@ -126,24 +103,62 @@ export function HeroSection() {
           >
             <Instagram className="w-5 h-5" />
           </a>
-        </motion.div>
+        </div>
 
         {/* Scroll indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5 }}
+        <div
           className="absolute bottom-8 left-1/2 -translate-x-1/2"
         >
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-            className="w-6 h-10 rounded-full border-2 border-muted-foreground/30 flex justify-center pt-2"
-          >
-            <motion.div className="w-1.5 h-1.5 rounded-full bg-muted-foreground/50" />
-          </motion.div>
-        </motion.div>
+          <div className="hero-fade-up" style={{ animationDelay: "1.5s" }}>
+            <div className="w-6 h-10 rounded-full border-2 border-muted-foreground/30 flex justify-center pt-2 hero-scroll-bob">
+              <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground/50" />
+            </div>
+          </div>
+        </div>
       </div>
+
+      <style>{`
+        .hero-fade-up {
+          opacity: 0;
+          transform: translateY(20px);
+          animation: hero-fade-up 0.8s ease-out forwards;
+        }
+
+        .hero-float {
+          animation: hero-float 6s ease-in-out infinite;
+        }
+
+        .hero-scroll-bob {
+          animation: hero-scroll-bob 1.5s ease-in-out infinite;
+        }
+
+        @keyframes hero-fade-up {
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes hero-float {
+          0%,
+          100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-10px);
+          }
+        }
+
+        @keyframes hero-scroll-bob {
+          0%,
+          100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(8px);
+          }
+        }
+      `}</style>
     </section>
   );
 }
