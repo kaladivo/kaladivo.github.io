@@ -1,28 +1,14 @@
-"use client";
-
-import { motion } from "framer-motion";
 import { ExternalLink, Shield, Users, Bitcoin } from "lucide-react";
-import { useInView } from "@/hooks/use-in-view";
+import { VexlInView, VexlReveal } from "./client/vexl-reveal";
 
 export function VexlSection() {
-  const { ref, isInView } = useInView({ threshold: 0.2 });
-
   return (
-    <section
-      id="vexl"
-      ref={ref}
-      className="relative py-24 md:py-32 overflow-hidden"
-    >
+    <section id="vexl" className="relative py-24 md:py-32 overflow-hidden">
       {/* Section divider - decorative element */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
 
-      <div className="max-w-4xl mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
+      <VexlInView className="max-w-4xl mx-auto px-6">
+        <VexlReveal className="text-center mb-12">
           <span className="font-mono text-sm text-accent mb-4 block">
             Since October 2022
           </span>
@@ -32,14 +18,9 @@ export function VexlSection() {
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             Building the future of peer-to-peer Bitcoin trading
           </p>
-        </motion.div>
+        </VexlReveal>
 
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="relative"
-        >
+        <VexlReveal className="relative" delay={0.2}>
           <div className="bg-card border border-border rounded-2xl p-8 md:p-12 card-glow">
             <div className="grid md:grid-cols-2 gap-8 items-center">
               <div>
@@ -71,10 +52,11 @@ export function VexlSection() {
               </div>
 
               <div className="grid grid-cols-1 gap-4">
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={isInView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ duration: 0.4, delay: 0.4 }}
+                <VexlReveal
+                  axis="x"
+                  distance={20}
+                  duration={0.4}
+                  delay={0.4}
                   className="flex items-start gap-4 p-4 rounded-xl bg-muted/50"
                 >
                   <div className="p-2 rounded-lg bg-accent/10 text-accent">
@@ -86,12 +68,13 @@ export function VexlSection() {
                       No KYC, no identity verification, full control
                     </p>
                   </div>
-                </motion.div>
+                </VexlReveal>
 
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={isInView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ duration: 0.4, delay: 0.5 }}
+                <VexlReveal
+                  axis="x"
+                  distance={20}
+                  duration={0.4}
+                  delay={0.5}
                   className="flex items-start gap-4 p-4 rounded-xl bg-muted/50"
                 >
                   <div className="p-2 rounded-lg bg-accent/10 text-accent">
@@ -103,12 +86,13 @@ export function VexlSection() {
                       Trade with friends and trusted connections
                     </p>
                   </div>
-                </motion.div>
+                </VexlReveal>
 
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={isInView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ duration: 0.4, delay: 0.6 }}
+                <VexlReveal
+                  axis="x"
+                  distance={20}
+                  duration={0.4}
+                  delay={0.6}
                   className="flex items-start gap-4 p-4 rounded-xl bg-muted/50"
                 >
                   <div className="p-2 rounded-lg bg-accent/10 text-accent">
@@ -120,12 +104,12 @@ export function VexlSection() {
                       Bitcoin as it was intended—peer to peer
                     </p>
                   </div>
-                </motion.div>
+                </VexlReveal>
               </div>
             </div>
           </div>
-        </motion.div>
-      </div>
+        </VexlReveal>
+      </VexlInView>
     </section>
   );
 }

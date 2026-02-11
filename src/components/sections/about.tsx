@@ -1,33 +1,25 @@
-"use client";
-
-import { motion } from "framer-motion";
-import { useInView } from "@/hooks/use-in-view";
+import { AboutInViewTrigger } from "@/components/sections/client/about-in-view-trigger";
 
 export function AboutSection() {
-  const { ref, isInView } = useInView({ threshold: 0.2 });
-
   return (
-    <section id="about" ref={ref} className="relative py-24 md:py-32">
+    <section id="about" className="relative py-24 md:py-32">
+      <AboutInViewTrigger sectionId="about" />
       {/* Section divider */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
 
       <div className="max-w-3xl mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+        <div
+          data-about-animate
+          className="text-center mb-12 opacity-0 translate-y-10 transition-all duration-700 ease-out motion-reduce:opacity-100 motion-reduce:translate-y-0"
         >
           <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
             About Me
           </h2>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="prose prose-lg dark:prose-invert max-w-none"
+        <div
+          data-about-animate
+          className="prose prose-lg dark:prose-invert max-w-none opacity-0 translate-y-10 transition-all duration-700 delay-200 ease-out motion-reduce:opacity-100 motion-reduce:translate-y-0"
         >
           <div className="space-y-6 text-lg leading-relaxed">
             <p>
@@ -66,7 +58,7 @@ export function AboutSection() {
               constantly working on the next thing.
             </p>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

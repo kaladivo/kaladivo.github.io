@@ -1,9 +1,6 @@
-"use client";
-
-import { motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
-import { useInView } from "@/hooks/use-in-view";
 import { cn } from "@/lib/utils";
+import { ProjectsInViewTrigger } from "./client/projects-in-view-trigger";
 
 interface Project {
   title: string;
@@ -44,22 +41,20 @@ const projects: Project[] = [
 function ProjectCard({
   project,
   index,
-  isInView,
 }: {
   project: Project;
   index: number;
-  isInView: boolean;
 }) {
   return (
-    <motion.a
+    <a
       href={project.url}
       target="_blank"
       rel="noopener noreferrer"
-      initial={{ opacity: 0, y: 40 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, delay: 0.1 * index }}
+      style={{ transitionDelay: `${index * 100}ms` }}
       className={cn(
         "group relative block",
+        "opacity-0 translate-y-10 transition-all duration-500 ease-out",
+        "group-data-[in-view=true]:opacity-100 group-data-[in-view=true]:translate-y-0",
         project.featured && "md:col-span-1"
       )}
     >
@@ -107,31 +102,32 @@ function ProjectCard({
           )}
         </div>
       </div>
-    </motion.a>
+    </a>
   );
 }
 
 export function ProjectsSection() {
-  const { ref, isInView } = useInView({ threshold: 0.1 });
-
   const featuredProjects = projects.filter((p) => p.featured);
   const otherProjects = projects.filter((p) => !p.featured);
 
   return (
     <section
       id="projects"
-      ref={ref}
-      className="relative py-24 md:py-32 overflow-hidden"
+      data-in-view="false"
+      className="group relative py-24 md:py-32 overflow-hidden"
     >
+      <ProjectsInViewTrigger sectionId="projects" />
+
       {/* Section divider */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
 
       <div className="max-w-5xl mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+        <div
+          className={cn(
+            "text-center mb-12",
+            "opacity-0 translate-y-10 transition-all duration-700 ease-out",
+            "group-data-[in-view=true]:opacity-100 group-data-[in-view=true]:translate-y-0"
+          )}
         >
           <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
             Side Projects
@@ -139,7 +135,7 @@ export function ProjectsSection() {
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             Things I build in my free time
           </p>
-        </motion.div>
+        </div>
 
         {/* Featured projects - larger cards */}
         <div className="grid md:grid-cols-2 gap-6 mb-6">
@@ -148,7 +144,6 @@ export function ProjectsSection() {
               key={project.title}
               project={project}
               index={index}
-              isInView={isInView}
             />
           ))}
         </div>
@@ -160,7 +155,6 @@ export function ProjectsSection() {
               key={project.title}
               project={project}
               index={index + featuredProjects.length}
-              isInView={isInView}
             />
           ))}
         </div>
