@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { Navigation } from "@/components/navigation";
 import {
   formatBlogDate,
-  getAllPublishedSlugs,
+  getAllPosts,
   getPostBySlug,
 } from "@/lib/blog";
 import { MarkdownContent } from "@/components/blog/markdown-content";
@@ -14,11 +14,10 @@ interface BlogPostPageProps {
 }
 
 export const dynamicParams = false;
-export const dynamic = "force-static";
 
 export async function generateStaticParams() {
-  const slugs = await getAllPublishedSlugs();
-  return slugs.map((slug) => ({ slug }));
+  const posts = await getAllPosts({ includeDrafts: true });
+  return posts.map((post) => ({ slug: post.slug }));
 }
 
 export async function generateMetadata({
