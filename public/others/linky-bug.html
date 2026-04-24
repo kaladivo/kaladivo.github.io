@@ -1,0 +1,1333 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Linky top-up bug: the full story</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f7f8fb;
+        --panel: #ffffff;
+        --ink: #18202b;
+        --muted: #5e6978;
+        --muted-strong: #3d4654;
+        --line: #d9dee8;
+        --line-strong: #b9c2d0;
+        --good: #167a55;
+        --warn: #b15c00;
+        --bad: #b42318;
+        --accent: #2154c7;
+        --accent-soft: #eaf0ff;
+        --accent-strong: #1840a3;
+        --good-soft: #eaf7f1;
+        --warn-soft: #fff4e3;
+        --bad-soft: #fff0ee;
+        --neutral-soft: #f0f3f9;
+        --shadow: 0 18px 45px rgba(24, 32, 43, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        line-height: 1.5;
+      }
+
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        border-bottom: 1px solid var(--line);
+        background: rgba(247, 248, 251, 0.94);
+        backdrop-filter: blur(14px);
+      }
+
+      nav {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 12px 20px;
+        overflow-x: auto;
+      }
+
+      nav a {
+        flex: 0 0 auto;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 8px 10px;
+        color: var(--ink);
+        font-size: 13px;
+        font-weight: 650;
+        text-decoration: none;
+        background: var(--panel);
+      }
+
+      nav a:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+
+      main {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 28px 20px 64px;
+      }
+
+      .slide {
+        min-height: calc(100vh - 78px);
+        display: grid;
+        align-content: center;
+        padding: 44px 0;
+      }
+
+      .card {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+        padding: clamp(22px, 4vw, 46px);
+      }
+
+      .eyebrow {
+        color: var(--accent);
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin: 0;
+        letter-spacing: 0;
+      }
+
+      h1 {
+        max-width: 960px;
+        margin-top: 12px;
+        font-size: clamp(36px, 5.5vw, 64px);
+        line-height: 1.02;
+      }
+
+      h2 {
+        max-width: 900px;
+        margin-top: 10px;
+        font-size: clamp(28px, 3.6vw, 44px);
+        line-height: 1.08;
+      }
+
+      h3 {
+        margin-bottom: 10px;
+        font-size: 19px;
+      }
+
+      p {
+        max-width: 820px;
+        margin: 14px 0 0;
+        color: var(--muted-strong);
+        font-size: clamp(16px, 1.35vw, 19px);
+      }
+
+      .lead {
+        font-size: clamp(19px, 2vw, 24px);
+        color: #2b3340;
+        max-width: 860px;
+      }
+
+      strong {
+        color: var(--ink);
+      }
+
+      em.term {
+        font-style: normal;
+        padding: 1px 6px;
+        border-radius: 4px;
+        background: var(--neutral-soft);
+        color: var(--ink);
+        font-weight: 600;
+        font-size: 0.92em;
+      }
+
+      .grid {
+        display: grid;
+        gap: 18px;
+        margin-top: 28px;
+      }
+
+      .grid.two {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .grid.three {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .mini {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 20px;
+        background: #fbfcfe;
+      }
+
+      .mini p {
+        margin-top: 10px;
+        font-size: 15.5px;
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        min-height: 26px;
+        border-radius: 999px;
+        padding: 3px 10px;
+        font-size: 12px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .tag.good {
+        color: var(--good);
+        background: var(--good-soft);
+      }
+
+      .tag.warn {
+        color: var(--warn);
+        background: var(--warn-soft);
+      }
+
+      .tag.bad {
+        color: var(--bad);
+        background: var(--bad-soft);
+      }
+
+      .tag.info {
+        color: var(--accent);
+        background: var(--accent-soft);
+      }
+
+      .callout {
+        margin-top: 26px;
+        border-left: 5px solid var(--accent);
+        border-radius: 8px;
+        padding: 18px 22px;
+        background: var(--accent-soft);
+      }
+
+      .callout.good {
+        border-left-color: var(--good);
+        background: var(--good-soft);
+      }
+
+      .callout.bad {
+        border-left-color: var(--bad);
+        background: var(--bad-soft);
+      }
+
+      .callout.warn {
+        border-left-color: var(--warn);
+        background: var(--warn-soft);
+      }
+
+      .callout p {
+        margin: 0;
+        color: #24334a;
+        font-size: 17px;
+      }
+
+      .callout.good p {
+        color: #154734;
+      }
+
+      .callout.bad p {
+        color: #6c1812;
+      }
+
+      .callout.warn p {
+        color: #6a3900;
+      }
+
+      /* Sequence diagram: two columns with arrows between them */
+      .seq {
+        display: grid;
+        grid-template-columns: 1fr 56px 1fr;
+        gap: 0;
+        margin-top: 28px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      .seq-header {
+        padding: 14px 18px;
+        font-weight: 800;
+        background: #eef2f9;
+        color: #2b3340;
+        font-size: 15px;
+        letter-spacing: 0.02em;
+      }
+
+      .seq-header.center {
+        background: #e2e8f3;
+      }
+
+      .seq-step {
+        display: contents;
+      }
+
+      .seq-cell {
+        padding: 16px 18px;
+        border-top: 1px solid var(--line);
+        background: var(--panel);
+        font-size: 15px;
+      }
+
+      .seq-cell.muted {
+        color: var(--muted);
+        font-style: italic;
+        background: #fafbfe;
+      }
+
+      .seq-cell.center {
+        display: grid;
+        place-items: center;
+        background: #f3f6fc;
+        color: var(--accent);
+        font-weight: 800;
+        font-family:
+          "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+        font-size: 16px;
+        border-top: 1px solid var(--line);
+      }
+
+      .seq-cell strong {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 15px;
+      }
+
+      .seq-cell span {
+        display: block;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .seq-cell.fail {
+        background: var(--bad-soft);
+      }
+
+      .seq-cell.fail strong {
+        color: var(--bad);
+      }
+
+      .seq-cell.ok {
+        background: var(--good-soft);
+      }
+
+      .seq-cell.ok strong {
+        color: var(--good);
+      }
+
+      /* Steps (horizontal row of boxes) */
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 24px;
+      }
+
+      .step {
+        position: relative;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 18px;
+        background: var(--panel);
+      }
+
+      .step-num {
+        display: inline-block;
+        margin-bottom: 8px;
+        padding: 2px 10px;
+        border-radius: 999px;
+        background: var(--neutral-soft);
+        color: var(--muted-strong);
+        font-weight: 800;
+        font-size: 12px;
+        letter-spacing: 0.08em;
+      }
+
+      .step h3 {
+        font-size: 17px;
+        margin-bottom: 6px;
+      }
+
+      .step p {
+        margin-top: 6px;
+        font-size: 14.5px;
+        color: var(--muted);
+      }
+
+      .step.good {
+        border-color: rgba(22, 122, 85, 0.35);
+        background: var(--good-soft);
+      }
+
+      .step.good .step-num {
+        background: #c9ead9;
+        color: var(--good);
+      }
+
+      .step.bad {
+        border-color: rgba(180, 35, 24, 0.35);
+        background: var(--bad-soft);
+      }
+
+      .step.bad .step-num {
+        background: #f4cfcb;
+        color: var(--bad);
+      }
+
+      .step.warn {
+        border-color: rgba(177, 92, 0, 0.35);
+        background: var(--warn-soft);
+      }
+
+      .step.warn .step-num {
+        background: #f6dcb3;
+        color: var(--warn);
+      }
+
+      /* Code block */
+      .code {
+        display: block;
+        margin-top: 18px;
+        border: 1px solid #2a3444;
+        border-radius: 10px;
+        padding: 16px 18px;
+        background: #101823;
+        color: #edf4ff;
+        font-family:
+          "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+        font-size: 13.5px;
+        line-height: 1.6;
+        overflow-x: auto;
+        white-space: pre;
+      }
+
+      .code .ok {
+        color: #7ad6b0;
+      }
+
+      .code .bad {
+        color: #f6938b;
+      }
+
+      .code .comment {
+        color: #8aa0bd;
+      }
+
+      /* Request flow diagram (browser -> proxy -> mint style) */
+      .reqflow {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr auto 1fr;
+        align-items: center;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .reqflow.two {
+        grid-template-columns: 1fr auto 1fr;
+      }
+
+      .reqflow .barrier {
+        display: inline-grid;
+        place-items: center;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: var(--bad-soft);
+        color: var(--bad);
+        font-weight: 800;
+        font-size: 18px;
+        border: 2px solid rgba(180, 35, 24, 0.4);
+      }
+
+      .node {
+        padding: 14px 16px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--panel);
+        text-align: center;
+        font-weight: 700;
+        font-size: 14.5px;
+      }
+
+      .node small {
+        display: block;
+        margin-top: 4px;
+        font-weight: 500;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .node.app {
+        background: #eef4ff;
+        border-color: #c8d6ff;
+        color: #1f3f94;
+      }
+
+      .node.mid {
+        background: #f4f7ff;
+        border-color: #c8d6ff;
+        color: #1f3f94;
+      }
+
+      .node.mint {
+        background: #f7efff;
+        border-color: #d5c0ef;
+        color: #5b2fa6;
+      }
+
+      .node.blocked {
+        background: var(--bad-soft);
+        border-color: #e6b3ae;
+        color: var(--bad);
+        text-decoration: line-through;
+      }
+
+      .arrow {
+        font-family:
+          "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+        color: var(--muted-strong);
+        font-weight: 800;
+      }
+
+      .arrow.blocked {
+        color: var(--bad);
+      }
+
+      /* Comparison / side-by-side */
+      .compare {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+        margin-top: 26px;
+      }
+
+      .commit {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 20px;
+        background: #fbfcfe;
+      }
+
+      .commit h3 {
+        margin-top: 10px;
+      }
+
+      .commit code {
+        display: inline-block;
+        margin-top: 4px;
+        padding: 2px 8px;
+        border-radius: 4px;
+        background: var(--neutral-soft);
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .commit ul {
+        margin: 14px 0 0;
+        padding-left: 20px;
+      }
+
+      .commit li {
+        margin: 8px 0;
+        color: var(--muted-strong);
+        font-size: 15px;
+      }
+
+      /* Side-by-side user vs app columns */
+      .parallel {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+        margin-top: 24px;
+      }
+
+      .column {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--panel);
+        overflow: hidden;
+      }
+
+      .column-title {
+        padding: 14px 18px;
+        background: #eef2f9;
+        font-weight: 800;
+        color: #2b3340;
+        font-size: 14px;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .column-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .column-list li {
+        padding: 14px 18px;
+        border-top: 1px solid var(--line);
+        font-size: 15px;
+      }
+
+      .column-list li strong {
+        display: block;
+        margin-bottom: 2px;
+      }
+
+      .column-list li .meta {
+        display: block;
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 13.5px;
+      }
+
+      .column-list li.ok {
+        background: var(--good-soft);
+      }
+
+      .column-list li.fail {
+        background: var(--bad-soft);
+      }
+
+      .column-list li.fail strong {
+        color: var(--bad);
+      }
+
+      .column-list li.ok strong {
+        color: var(--good);
+      }
+
+      .column-list li.wait {
+        background: var(--warn-soft);
+      }
+
+      .column-list li.wait strong {
+        color: var(--warn);
+      }
+
+      /* Timeline table */
+      table {
+        width: 100%;
+        margin-top: 28px;
+        border-collapse: collapse;
+        font-size: 15px;
+      }
+
+      th,
+      td {
+        border-bottom: 1px solid var(--line);
+        padding: 14px 10px;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        color: #303946;
+        font-size: 12.5px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      td:first-child {
+        white-space: nowrap;
+        font-weight: 800;
+        font-size: 13.5px;
+        color: var(--muted-strong);
+      }
+
+      td code {
+        padding: 2px 6px;
+        border-radius: 4px;
+        background: var(--neutral-soft);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      tr.good td {
+        background: rgba(234, 247, 241, 0.4);
+      }
+
+      tr.bad td {
+        background: rgba(255, 240, 238, 0.4);
+      }
+
+      tr.fix td {
+        background: rgba(234, 240, 255, 0.5);
+      }
+
+      .footer-note {
+        margin-top: 28px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      /* Analogy box */
+      .analogy {
+        margin-top: 26px;
+        padding: 22px;
+        border: 1px dashed var(--line-strong);
+        border-radius: 10px;
+        background: #fcfcfe;
+      }
+
+      .analogy-title {
+        display: inline-block;
+        margin-bottom: 8px;
+        padding: 3px 10px;
+        border-radius: 999px;
+        background: #2b3340;
+        color: white;
+        font-size: 11px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .analogy p {
+        margin-top: 6px;
+        font-size: 16px;
+        color: var(--muted-strong);
+      }
+
+      @media (max-width: 900px) {
+        .grid.two,
+        .grid.three,
+        .compare,
+        .parallel,
+        .steps {
+          grid-template-columns: 1fr;
+        }
+
+        .seq {
+          grid-template-columns: 1fr 40px 1fr;
+        }
+
+        .reqflow {
+          grid-template-columns: 1fr;
+          gap: 8px;
+        }
+
+        .arrow {
+          text-align: center;
+        }
+
+        .slide {
+          min-height: auto;
+          padding: 26px 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav aria-label="Presentation navigation">
+        <a href="#summary">Summary</a>
+        <a href="#dance">The 3 calls</a>
+        <a href="#cors">CORS</a>
+        <a href="#before">Before the bug</a>
+        <a href="#switch">The design change</a>
+        <a href="#half-fix">The half-fix</a>
+        <a href="#default-mint">Default mint</a>
+        <a href="#user-vs-app">User vs. app</a>
+        <a href="#fix">The real fix</a>
+        <a href="#timeline">Timeline</a>
+      </nav>
+    </header>
+
+    <main>
+      <!-- 1. SUMMARY -->
+      <section id="summary" class="slide">
+        <div class="card">
+          <div class="eyebrow">Linky top-up bug - a plain-English explanation</div>
+          <h1>You paid the Lightning invoice. Nothing showed up in Linky. Here is exactly why.</h1>
+          <p class="lead">
+            A Cashu top-up is not one action - it is <strong>three separate
+            calls</strong> between your browser and the mint. For about six
+            weeks, Linky's production build could complete only the first one.
+            For the final five of those weeks, the default mint was one that
+            made the breakage hit almost every new top-up.
+          </p>
+
+          <div class="grid three">
+            <div class="mini">
+              <span class="tag bad">Symptom</span>
+              <h3>Invoice paid, no sats arrive</h3>
+              <p>
+                The Receive screen shows a Lightning invoice, your wallet pays
+                it, and then the Linky balance never updates.
+              </p>
+            </div>
+            <div class="mini">
+              <span class="tag warn">Cause</span>
+              <h3>Two of three mint calls were blocked</h3>
+              <p>
+                Invoice creation was routed through Linky's own server, but the
+                two follow-up calls that actually mint ecash were still sent
+                straight from the browser to the mint - and the browser refused
+                them.
+              </p>
+            </div>
+            <div class="mini">
+              <span class="tag info">Trigger</span>
+              <h3>Default mint changed</h3>
+              <p>
+                The previous default mint happened to be permissive, so the gap
+                stayed hidden. When the default moved to <code>cashu.cz</code>,
+                the gap became the normal experience.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. THE THREE CALLS -->
+      <section id="dance" class="slide">
+        <div class="card">
+          <div class="eyebrow">What actually happens during a Cashu top-up</div>
+          <h2>A top-up is a three-step conversation between your browser and the mint.</h2>
+          <p>
+            Paying the Lightning invoice is the middle of the story, not the end
+            of it. Before paying, the app has to ask the mint for a quote.
+            After paying, the app has to go back to the mint twice more: once
+            to confirm the payment was received, and once to actually
+            <strong>mint the ecash tokens</strong> into your wallet. Until that
+            last call completes, <strong>no Cashu proofs exist yet</strong>. The
+            mint is just holding your sats, waiting to issue tokens.
+          </p>
+
+          <div class="seq" aria-label="Three-step Cashu top-up sequence">
+            <div class="seq-header">Your browser (Linky)</div>
+            <div class="seq-header center">Call</div>
+            <div class="seq-header">The mint</div>
+
+            <div class="seq-step">
+              <div class="seq-cell">
+                <strong>1. "I want to deposit X sats."</strong>
+                <span>The app asks for an invoice to top up the wallet.</span>
+              </div>
+              <div class="seq-cell center">POST<br/>/v1/mint/quote/bolt11</div>
+              <div class="seq-cell">
+                <strong>Returns a Lightning invoice + quote ID.</strong>
+                <span>The quote ID is how the app will refer to this deposit later.</span>
+              </div>
+            </div>
+
+            <div class="seq-step">
+              <div class="seq-cell muted" style="grid-column: 1 / -1;">
+                You pay the invoice with any Lightning wallet. The mint receives
+                the sats. Linky is not involved in this step - this is pure
+                Lightning.
+              </div>
+            </div>
+
+            <div class="seq-step">
+              <div class="seq-cell">
+                <strong>2. "Is quote X paid yet?"</strong>
+                <span>The app polls until the mint says the invoice has been settled.</span>
+              </div>
+              <div class="seq-cell center">GET<br/>/v1/mint/quote/{id}</div>
+              <div class="seq-cell">
+                <strong>Returns state: PENDING -&gt; PAID.</strong>
+                <span>Once PAID, the mint is ready to issue Cashu tokens against it.</span>
+              </div>
+            </div>
+
+            <div class="seq-step">
+              <div class="seq-cell">
+                <strong>3. "Please mint my tokens now."</strong>
+                <span>The app sends blinded requests for ecash denominations.</span>
+              </div>
+              <div class="seq-cell center">POST<br/>/v1/mint</div>
+              <div class="seq-cell">
+                <strong>Returns signed Cashu proofs.</strong>
+                <span>The app stores these locally. This is when the balance actually appears.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout bad">
+            <p>
+              <strong>Key point:</strong> paying the Lightning invoice does not
+              put Cashu in your wallet. Paying only tells the mint it has your
+              sats. Steps 2 and 3 are where the actual ecash is created. Skip
+              them and the balance stays at zero forever.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. CORS -->
+      <section id="cors" class="slide">
+        <div class="card">
+          <div class="eyebrow">The hidden rule that broke the flow</div>
+          <h2>Browsers will not let a web app call any server it wants.</h2>
+          <p>
+            This is the whole secret of the bug. When a webpage in your browser
+            tries to call a server on a different domain, the browser applies a
+            security check called <em class="term">CORS</em> (Cross-Origin
+            Resource Sharing). The target server has to explicitly say "yes, I
+            accept calls from this origin" via HTTP headers. If it does not,
+            the browser quietly refuses the call before it even happens.
+          </p>
+
+          <div class="analogy">
+            <span class="analogy-title">Analogy</span>
+            <p>
+              CORS is your browser being paranoid on your behalf. Imagine a
+              bank that only accepts instructions sent through its own verified
+              phone lines. If a random third-party caller rings in on an
+              unverified number, the bank refuses to even listen. Cashu mints
+              are the same: unless the mint explicitly welcomes browser calls
+              from <code>app.linky.fit</code>, your browser treats them like
+              that unverified caller and hangs up.
+            </p>
+          </div>
+
+          <p>
+            Most Cashu mints have <strong>never configured CORS</strong>,
+            because they assume clients are native apps, server-to-server
+            integrations, or scripts - environments where CORS simply does not
+            apply. Browsers are the odd one out.
+          </p>
+
+          <h3 style="margin-top:28px;">The workaround: a proxy on your own domain</h3>
+          <p>
+            A <em class="term">proxy</em> here is a tiny server that runs on
+            Linky's own domain. The browser calls <strong>the proxy</strong>
+            instead of the mint. Since the proxy lives on the same origin as
+            the app, CORS does not apply. The proxy then forwards the request
+            to the mint from <strong>server to server</strong>, where CORS also
+            does not apply. The mint answers, the proxy passes the answer back,
+            and the app gets what it needed.
+          </p>
+
+          <div class="reqflow two">
+            <div class="node app">Browser<small>(Linky app)</small></div>
+            <div class="arrow blocked" aria-label="blocked"><span class="barrier">X</span></div>
+            <div class="node blocked">Cashu mint</div>
+          </div>
+          <p style="margin-top:10px; font-size:14px;"><em>Direct call: the browser itself refuses to send it because the mint did not opt in to CORS.</em></p>
+
+          <div class="reqflow">
+            <div class="node app">Browser<small>(Linky app)</small></div>
+            <div class="arrow">-&gt;</div>
+            <div class="node mid">Linky proxy<small>(same origin, a tiny server)</small></div>
+            <div class="arrow">-&gt;</div>
+            <div class="node mint">Cashu mint</div>
+          </div>
+          <p style="margin-top:10px; font-size:14px;"><em>Proxied call: browser trusts same-origin, server-to-server ignores CORS.</em></p>
+        </div>
+      </section>
+
+      <!-- 4. BEFORE -->
+      <section id="before" class="slide">
+        <div class="card">
+          <div class="eyebrow">Before the bug existed</div>
+          <h2>Linky's first top-up never called the mint from the browser at all.</h2>
+          <p>
+            In the original design, the Receive screen used the user's
+            <code>npub.cash</code> Lightning address. The app asked
+            <code>npub.cash</code> for a Lightning invoice, showed it, and when
+            paid, <code>npub.cash</code> delivered the ecash back to the app
+            through an existing sync mechanism. The mint was in the picture,
+            but only through <code>npub.cash</code> - not through the browser.
+          </p>
+
+          <div class="reqflow">
+            <div class="node app">Browser<small>(Linky app)</small></div>
+            <div class="arrow">-&gt;</div>
+            <div class="node mid">npub.cash<small>(LN address service)</small></div>
+            <div class="arrow">-&gt;</div>
+            <div class="node mint">Mint<small>(behind the scenes)</small></div>
+          </div>
+
+          <div class="callout good">
+            <p>
+              CORS was <strong>never on the critical path</strong> for top-up.
+              That is why early Linky could work in a browser even though a
+              direct-to-mint call would have been refused.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. THE SWITCH -->
+      <section id="switch" class="slide">
+        <div class="card">
+          <div class="eyebrow">Commit 474fd0e - 2026-01-16</div>
+          <h2>We switched Linky to talking directly to the mint.</h2>
+          <p>
+            A redesign introduced a proper Cashu-native receive flow. The app
+            started performing all three mint calls itself. This was the
+            <strong>correct</strong> Cashu protocol flow, and it enabled big
+            wins: users could pick any mint they wanted, restore deterministic
+            wallets, control denominations, and so on.
+          </p>
+          <p>
+            The tradeoff: the browser now had to reach the mint directly, so
+            CORS became a hard dependency. If the chosen mint did not welcome
+            browser calls, top-up would fail. A developer added a Vite
+            <em class="term">dev proxy</em> a week later
+            (<code>52b3b88</code>) so local development worked, but
+            <strong>nothing equivalent existed in production</strong>.
+          </p>
+
+          <div class="steps">
+            <div class="step warn">
+              <span class="step-num">Call 1</span>
+              <h3>Create quote</h3>
+              <p><code>POST /v1/mint/quote/bolt11</code> - direct from the browser to the mint.</p>
+            </div>
+            <div class="step warn">
+              <span class="step-num">Call 2</span>
+              <h3>Check quote</h3>
+              <p><code>GET /v1/mint/quote/{id}</code> - direct from the browser.</p>
+            </div>
+            <div class="step warn">
+              <span class="step-num">Call 3</span>
+              <h3>Mint proofs</h3>
+              <p><code>POST /v1/mint</code> - direct from the browser.</p>
+            </div>
+          </div>
+
+          <div class="callout warn">
+            <p>
+              At this point the bug was technically present for any mint that
+              did not allow browser calls. It stayed invisible because Linky's
+              default mint (<code>mint.minibits.cash</code>) happened to send
+              permissive CORS headers and therefore accepted browser calls
+              anyway.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. HALF FIX -->
+      <section id="half-fix" class="slide">
+        <div class="card">
+          <div class="eyebrow">Commit b81c4a3 - 2026-03-15</div>
+          <h2>We added a proxy - but only for the first call.</h2>
+          <p>
+            A new serverless endpoint, <code>/api/mint-quote</code>, was
+            deployed alongside the app. The Receive screen started calling
+            Linky's own server for invoice creation instead of calling the
+            mint directly. That fixed step 1 for every mint, CORS or not.
+          </p>
+          <p>
+            But <strong>the two follow-up calls that actually mint the ecash</strong>
+            - <code>wallet.checkMintQuote()</code> and
+            <code>wallet.mintProofs()</code> - were untouched. The Cashu
+            library (<code>cashu-ts</code>) still sent those straight from the
+            browser to the mint using its default request handler.
+          </p>
+
+          <div class="compare">
+            <div class="commit">
+              <span class="tag good">Fixed in this commit</span>
+              <h3>Call 1 - Create quote</h3>
+              <code>/api/mint-quote?mint=...</code>
+              <ul>
+                <li>Browser sends the request to Linky's own origin.</li>
+                <li>The serverless route forwards it to <code>/v1/mint/quote/bolt11</code>.</li>
+                <li>CORS no longer blocks invoice creation.</li>
+              </ul>
+            </div>
+            <div class="commit">
+              <span class="tag bad">Still broken after this commit</span>
+              <h3>Calls 2 and 3 - Check + Mint</h3>
+              <code>wallet.checkMintQuote + wallet.mintProofs</code>
+              <ul>
+                <li>The wallet library still calls the mint directly.</li>
+                <li>The browser can still block both requests.</li>
+                <li>Even a paid invoice never gets claimed as ecash.</li>
+              </ul>
+            </div>
+          </div>
+
+          <code class="code"><span class="comment"># Before b81c4a3 (production)</span>
+Browser -&gt; mint  /v1/mint/quote/bolt11   <span class="bad">(needs CORS)</span>
+Browser -&gt; mint  /v1/mint/quote/{id}     <span class="bad">(needs CORS)</span>
+Browser -&gt; mint  /v1/mint                <span class="bad">(needs CORS)</span>
+
+<span class="comment"># After b81c4a3 (production)</span>
+Browser -&gt; /api/mint-quote -&gt; mint    <span class="ok">(fixed)</span>
+Browser -&gt; mint  /v1/mint/quote/{id}     <span class="bad">(still direct)</span>
+Browser -&gt; mint  /v1/mint                <span class="bad">(still direct)</span></code>
+
+          <div class="callout warn">
+            <p>
+              Why this slipped through: if you manually tested by generating an
+              invoice and paying it, the invoice definitely appeared. And if
+              you were on a mint with permissive CORS (like minibits), even the
+              follow-up calls silently worked. The commit <em>looked</em>
+              complete.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. DEFAULT MINT -->
+      <section id="default-mint" class="slide">
+        <div class="card">
+          <div class="eyebrow">Commit fb1fb98 - 2026-03-20</div>
+          <h2>Then the default mint changed to cashu.cz - and the gap became everyone's problem.</h2>
+          <p>
+            A one-line commit swapped the default mint URL. Small change, huge
+            effect. The old default (<code>mint.minibits.cash</code>) had
+            permissive CORS headers, which quietly masked calls 2 and 3 still
+            being direct. The new default (<code>cashu.cz</code>) does
+            <strong>not</strong> send those headers. From this point on, the
+            most common receive path hit a wall on step 2.
+          </p>
+
+          <code class="code"><span class="bad">- export const MAIN_MINT_URL = "https://mint.minibits.cash/Bitcoin";</span>
+<span class="ok">+ export const MAIN_MINT_URL = "https://cashu.cz";</span></code>
+
+          <div class="grid two">
+            <div class="mini">
+              <span class="tag info">Before this commit</span>
+              <h3>Bug exists, but hidden</h3>
+              <p>
+                Only users who had manually chosen a strict mint would see the
+                failure. Most users defaulted to minibits, and minibits
+                accepted the browser's direct calls, so top-up looked fine.
+              </p>
+            </div>
+            <div class="mini">
+              <span class="tag bad">After this commit</span>
+              <h3>Bug hits the default path</h3>
+              <p>
+                New users, factory-reset users, and anyone opted into the
+                default mint now topped up through a mint whose browser calls
+                were refused. Invoice appeared, invoice was paid, nothing
+                landed.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. USER VS APP -->
+      <section id="user-vs-app" class="slide">
+        <div class="card">
+          <div class="eyebrow">Why the bug felt so confusing</div>
+          <h2>Two parallel timelines: what you saw, and what the app was trying to do.</h2>
+          <p>
+            From the user's perspective, every sign said "this worked" - the
+            invoice appeared, the Lightning payment went through, the payer's
+            wallet showed a successful send. And then: nothing. The app looked
+            broken in the most frustrating way, because the failure was
+            silent. Here is the two-track view.
+          </p>
+
+          <div class="parallel">
+            <div class="column">
+              <div class="column-title">What the user saw</div>
+              <ul class="column-list">
+                <li class="ok">
+                  <strong>Invoice appeared</strong>
+                  <span class="meta">Entered amount, QR and string showed up as expected.</span>
+                </li>
+                <li class="ok">
+                  <strong>Lightning wallet paid it</strong>
+                  <span class="meta">Payer's wallet reported success.</span>
+                </li>
+                <li class="wait">
+                  <strong>Nothing happens</strong>
+                  <span class="meta">Balance stays at previous value. No error. No spinner forever.</span>
+                </li>
+                <li class="fail">
+                  <strong>Close and reopen - still nothing</strong>
+                  <span class="meta">Reopening the app does not help, because the same CORS-blocked calls run again and fail the same way.</span>
+                </li>
+              </ul>
+            </div>
+            <div class="column">
+              <div class="column-title">What the app was doing</div>
+              <ul class="column-list">
+                <li class="ok">
+                  <strong>Call 1: quote created</strong>
+                  <span class="meta">Went through <code>/api/mint-quote</code>. Worked.</span>
+                </li>
+                <li class="ok">
+                  <strong>(Lightning delivered sats to the mint)</strong>
+                  <span class="meta">This happens outside the app. Nothing to fail here.</span>
+                </li>
+                <li class="fail">
+                  <strong>Call 2: check quote - blocked by CORS</strong>
+                  <span class="meta">Browser refused to contact <code>cashu.cz</code> directly. The app never found out the invoice was paid.</span>
+                </li>
+                <li class="fail">
+                  <strong>Call 3: mint proofs - never ran</strong>
+                  <span class="meta">Because call 2 never succeeded, the app had no "PAID" signal to trigger minting. No proofs were created.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="callout good">
+            <p>
+              <strong>Good news:</strong> the sats are not lost. The mint is
+              holding them against the paid quote. As soon as Linky can run
+              calls 2 and 3 from a context where CORS does not block them - for
+              example after the fix below - the ecash shows up in the wallet.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 9. REAL FIX -->
+      <section id="fix" class="slide">
+        <div class="card">
+          <div class="eyebrow">Commit 544bf9f - 2026-04-24</div>
+          <h2>The real fix: route every mint call through Linky's own server.</h2>
+          <p>
+            The fix does what the half-fix should have done six weeks earlier.
+            A second serverless route, <code>/api/cashu-mint</code>, acts as a
+            <strong>generic proxy for any mint endpoint</strong>. Instead of
+            hardcoding a single path (like <code>/api/mint-quote</code> did),
+            this one takes <code>?mint=</code> and <code>?path=</code> query
+            parameters and forwards the request accordingly.
+          </p>
+          <p>
+            On top of that, the Cashu wallet bootstrap now accepts a
+            <code>useWebProxy: true</code> flag. When the web app constructs
+            the wallet, it installs a custom request handler into
+            <code>cashu-ts</code> that rewrites <strong>every</strong> mint
+            call - including the two that were broken - to go through
+            <code>/api/cashu-mint</code>. Native shells (Android, iOS) do not
+            set this flag, because they are not browsers and do not have CORS
+            restrictions.
+          </p>
+
+          <div class="steps">
+            <div class="step good">
+              <span class="step-num">Call 1</span>
+              <h3>Create quote</h3>
+              <p>Browser -&gt; <code>/api/cashu-mint</code> -&gt; mint.</p>
+            </div>
+            <div class="step good">
+              <span class="step-num">Call 2</span>
+              <h3>Check quote</h3>
+              <p>Browser -&gt; <code>/api/cashu-mint</code> -&gt; mint.</p>
+            </div>
+            <div class="step good">
+              <span class="step-num">Call 3</span>
+              <h3>Mint proofs</h3>
+              <p>Browser -&gt; <code>/api/cashu-mint</code> -&gt; mint.</p>
+            </div>
+          </div>
+
+          <code class="code"><span class="comment"># After 544bf9f (production, web)</span>
+Browser -&gt; /api/mint-quote -&gt; mint    <span class="ok">(existing)</span>
+Browser -&gt; /api/cashu-mint -&gt; mint    <span class="ok">(new, covers check + mint)</span>
+
+<span class="comment"># Native apps (Android, iOS) - unchanged</span>
+Native  -&gt; mint directly                <span class="ok">(no browser, no CORS)</span></code>
+
+          <div class="callout good">
+            <p>
+              With all three calls proxied, the flow finally works end to end
+              on the default mint. Any previously paid-but-unclaimed quote is
+              picked up on next launch and converted into spendable ecash.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 10. TIMELINE -->
+      <section id="timeline" class="slide">
+        <div class="card">
+          <div class="eyebrow">Commit timeline</div>
+          <h2>The whole history in one table.</h2>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Commit</th>
+                <th>What changed</th>
+                <th>Effect on top-up</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="good">
+                <td>2026-01-09</td>
+                <td><code>717571e</code></td>
+                <td>Top-up introduced via the user's <code>npub.cash</code> Lightning address.</td>
+                <td>Worked: browser never spoke to the mint directly, so CORS was irrelevant.</td>
+              </tr>
+              <tr>
+                <td>2026-01-16</td>
+                <td><code>474fd0e</code></td>
+                <td>Switched to the mint-native flow (quote -&gt; check -&gt; mint).</td>
+                <td>Correct Cashu flow, but now all three calls need CORS. Bug latent from here on any strict mint.</td>
+              </tr>
+              <tr>
+                <td>2026-01-23</td>
+                <td><code>52b3b88</code></td>
+                <td>Added a Vite dev proxy for quote creation.</td>
+                <td>Helps local dev only. Production still calls the mint directly for all three steps.</td>
+              </tr>
+              <tr class="bad">
+                <td>2026-03-15</td>
+                <td><code>b81c4a3</code></td>
+                <td>Added <code>/api/mint-quote</code> proxy for invoice creation only.</td>
+                <td>Invoice creation fixed. Check and mint still direct. Masked by the permissive default mint.</td>
+              </tr>
+              <tr class="bad">
+                <td>2026-03-20</td>
+                <td><code>fb1fb98</code></td>
+                <td>Default mint changed to <code>cashu.cz</code>.</td>
+                <td>Bug became the default experience: invoice shows, gets paid, nothing lands.</td>
+              </tr>
+              <tr class="fix">
+                <td>2026-04-24</td>
+                <td><code>544bf9f</code></td>
+                <td>Added <code>/api/cashu-mint</code> proxy and <code>useWebProxy</code> in the wallet.</td>
+                <td>All three calls now proxied in the web build. Top-up works on any mint from a browser.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p class="footer-note">
+            One-line summary: <code>b81c4a3</code> fixed invoice creation but
+            forgot the two follow-up calls that actually mint the ecash.
+            <code>fb1fb98</code> then moved the default mint onto a path where
+            those two missing pieces mattered. <code>544bf9f</code> closes the
+            gap by proxying every mint call.
+          </p>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
