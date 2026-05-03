@@ -1,0 +1,1063 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Linky Web App Rewrite Strategy</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #17211f;
+        --muted: #5c6a67;
+        --line: #d8e2df;
+        --paper: #fbfcfb;
+        --panel: #ffffff;
+        --teal: #0d766e;
+        --teal-dark: #075953;
+        --green: #1f8a5b;
+        --yellow: #a46f04;
+        --blue: #226aa5;
+        --red: #b13d32;
+        --shadow: 0 18px 50px rgb(23 33 31 / 12%);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background:
+          radial-gradient(circle at top left, rgb(13 118 110 / 10%), transparent 34rem),
+          linear-gradient(180deg, #f8fbfa 0%, #eef5f3 100%);
+        color: var(--ink);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        line-height: 1.45;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .deck {
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 28px 0 56px;
+      }
+
+      .top-nav {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 0;
+        backdrop-filter: blur(18px);
+      }
+
+      .brand {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        color: var(--teal-dark);
+        font-weight: 800;
+      }
+
+      .brand-mark {
+        display: grid;
+        width: 34px;
+        height: 34px;
+        place-items: center;
+        border-radius: 8px;
+        background: var(--teal);
+        color: white;
+        font-weight: 900;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        overflow: auto;
+        padding-bottom: 2px;
+      }
+
+      .nav-links a {
+        flex: 0 0 auto;
+        padding: 8px 10px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: rgb(255 255 255 / 70%);
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .slide {
+        min-height: 720px;
+        margin: 22px 0;
+        padding: clamp(26px, 5vw, 58px);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--paper);
+        box-shadow: var(--shadow);
+      }
+
+      .slide.hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+        gap: 44px;
+        align-items: center;
+        background:
+          linear-gradient(120deg, rgb(13 118 110 / 12%), transparent 46%),
+          var(--paper);
+      }
+
+      .eyebrow {
+        margin: 0 0 14px;
+        color: var(--teal-dark);
+        font-size: 13px;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin: 0;
+        letter-spacing: 0;
+        line-height: 1.05;
+      }
+
+      h1 {
+        max-width: 820px;
+        font-size: clamp(42px, 7vw, 78px);
+      }
+
+      h2 {
+        max-width: 880px;
+        font-size: clamp(34px, 5vw, 58px);
+      }
+
+      h3 {
+        font-size: 22px;
+      }
+
+      .lead {
+        max-width: 780px;
+        margin: 22px 0 0;
+        color: var(--muted);
+        font-size: clamp(19px, 2vw, 24px);
+      }
+
+      .section-lead {
+        max-width: 780px;
+        margin: 16px 0 34px;
+        color: var(--muted);
+        font-size: 20px;
+      }
+
+      .hero-card {
+        padding: 26px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: white;
+      }
+
+      .hero-card-title {
+        margin: 0 0 18px;
+        color: var(--teal-dark);
+        font-size: 15px;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      .journey {
+        display: grid;
+        gap: 12px;
+      }
+
+      .journey-step {
+        display: grid;
+        grid-template-columns: 42px 1fr;
+        gap: 14px;
+        align-items: start;
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #f8fbfa;
+      }
+
+      .num {
+        display: grid;
+        width: 42px;
+        height: 42px;
+        place-items: center;
+        border-radius: 8px;
+        background: var(--teal);
+        color: white;
+        font-weight: 900;
+      }
+
+      .journey-step strong {
+        display: block;
+        margin-bottom: 3px;
+        font-size: 16px;
+      }
+
+      .journey-step span {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .grid {
+        display: grid;
+        gap: 18px;
+      }
+
+      .grid.two {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .grid.three {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .card {
+        min-height: 150px;
+        padding: 22px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+      }
+
+      .card p {
+        margin: 10px 0 0;
+        color: var(--muted);
+      }
+
+      .metric {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--teal-dark);
+        font-size: 38px;
+        font-weight: 900;
+        line-height: 1;
+      }
+
+      .status {
+        display: inline-flex;
+        align-items: center;
+        min-height: 30px;
+        margin-bottom: 14px;
+        padding: 5px 9px;
+        border-radius: 8px;
+        background: rgb(13 118 110 / 10%);
+        color: var(--teal-dark);
+        font-size: 12px;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      .status.risk {
+        background: rgb(177 61 50 / 10%);
+        color: var(--red);
+      }
+
+      .status.plan {
+        background: rgb(34 106 165 / 10%);
+        color: var(--blue);
+      }
+
+      .status.value {
+        background: rgb(31 138 91 / 10%);
+        color: var(--green);
+      }
+
+      .flow {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 34px;
+      }
+
+      .flow-step {
+        position: relative;
+        padding: 22px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: white;
+      }
+
+      .flow-step:not(:last-child)::after {
+        position: absolute;
+        top: 50%;
+        right: -22px;
+        width: 28px;
+        height: 2px;
+        background: var(--teal);
+        content: "";
+      }
+
+      .flow-step h3 {
+        margin-bottom: 10px;
+        color: var(--teal-dark);
+      }
+
+      .flow-step p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .chunk-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .chunk {
+        display: grid;
+        grid-template-columns: 54px 1fr;
+        gap: 14px;
+        align-items: start;
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: white;
+      }
+
+      .chunk-number {
+        display: grid;
+        width: 54px;
+        height: 54px;
+        place-items: center;
+        border-radius: 8px;
+        background: #edf7f5;
+        color: var(--teal-dark);
+        font-size: 20px;
+        font-weight: 900;
+      }
+
+      .chunk h3 {
+        margin-bottom: 6px;
+        font-size: 20px;
+      }
+
+      .chunk p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 15px;
+      }
+
+      .timeline {
+        display: grid;
+        gap: 14px;
+        margin-top: 28px;
+      }
+
+      .timeline-item {
+        display: grid;
+        grid-template-columns: 170px 1fr;
+        gap: 20px;
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: white;
+      }
+
+      .timeline-label {
+        color: var(--teal-dark);
+        font-weight: 900;
+      }
+
+      .timeline-item p {
+        margin: 4px 0 0;
+        color: var(--muted);
+      }
+
+      .principles {
+        display: grid;
+        gap: 12px;
+        margin-top: 30px;
+      }
+
+      .principle {
+        display: grid;
+        grid-template-columns: 28px 1fr;
+        gap: 12px;
+        align-items: start;
+        padding: 14px 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .check {
+        color: var(--green);
+        font-size: 21px;
+        font-weight: 900;
+        line-height: 1;
+      }
+
+      .principle strong {
+        display: block;
+        margin-bottom: 3px;
+      }
+
+      .principle span {
+        color: var(--muted);
+      }
+
+      .decision-box {
+        margin-top: 36px;
+        padding: 24px;
+        border: 2px solid rgb(13 118 110 / 28%);
+        border-radius: 8px;
+        background: rgb(13 118 110 / 8%);
+      }
+
+      .decision-box h3 {
+        margin-bottom: 10px;
+        color: var(--teal-dark);
+      }
+
+      .decision-box p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 18px;
+      }
+
+      .small {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .footer {
+        padding: 28px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+        text-align: center;
+      }
+
+      @media (max-width: 860px) {
+        .slide,
+        .slide.hero {
+          min-height: auto;
+        }
+
+        .slide.hero,
+        .grid.two,
+        .grid.three,
+        .flow,
+        .chunk-list {
+          grid-template-columns: 1fr;
+        }
+
+        .flow-step:not(:last-child)::after {
+          display: none;
+        }
+
+        .timeline-item {
+          grid-template-columns: 1fr;
+        }
+
+        .top-nav {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+      }
+
+      @media print {
+        body {
+          background: white;
+        }
+
+        .deck {
+          width: 100%;
+          padding: 0;
+        }
+
+        .top-nav {
+          display: none;
+        }
+
+        .slide {
+          min-height: 100vh;
+          margin: 0;
+          break-after: page;
+          border: 0;
+          border-radius: 0;
+          box-shadow: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="deck">
+      <nav class="top-nav" aria-label="Presentation sections">
+        <div class="brand">
+          <div class="brand-mark">L</div>
+          <span>Linky Rewrite Strategy</span>
+        </div>
+        <div class="nav-links">
+          <a href="#why">Why</a>
+          <a href="#approach">Approach</a>
+          <a href="#chunks">Chunks</a>
+          <a href="#plan">Plan</a>
+          <a href="#decision">Decision</a>
+        </div>
+      </nav>
+
+      <section class="slide hero" id="intro">
+        <div>
+          <p class="eyebrow">Gradual web app rewrite</p>
+          <h1>Make Linky faster to change without stopping product delivery</h1>
+          <p class="lead">
+            The goal is not a long rewrite project. The goal is to move business
+            logic into a clean core package, replace risky parts of the current
+            web app piece by piece, and keep shipping while the architecture
+            improves.
+          </p>
+        </div>
+        <aside class="hero-card" aria-label="Rewrite path">
+          <p class="hero-card-title">Target path</p>
+          <div class="journey">
+            <div class="journey-step">
+              <div class="num">1</div>
+              <div>
+                <strong>Current web app</strong>
+                <span>Feature-rich, but hard to understand and debug.</span>
+              </div>
+            </div>
+            <div class="journey-step">
+              <div class="num">2</div>
+              <div>
+                <strong>Current web app using clean core</strong>
+                <span>Lower risk, better tests, clearer ownership.</span>
+              </div>
+            </div>
+            <div class="journey-step">
+              <div class="num">3</div>
+              <div>
+                <strong>New web app using clean core</strong>
+                <span>Modern UI code on top of proven business logic.</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="slide" id="why">
+        <p class="eyebrow">Business problem</p>
+        <h2>The current cost is not just technical debt</h2>
+        <p class="section-lead">
+          When core behavior is tangled with UI, storage, and platform code,
+          every product change takes longer and carries more risk.
+        </p>
+        <div class="grid three">
+          <article class="card">
+            <span class="status risk">Delivery risk</span>
+            <h3>Small changes are expensive</h3>
+            <p>
+              Developers need to understand too much unrelated code before
+              safely changing one product flow.
+            </p>
+          </article>
+          <article class="card">
+            <span class="status risk">Quality risk</span>
+            <h3>Bugs are harder to isolate</h3>
+            <p>
+              Payment, messaging, identity, and UI behavior currently overlap,
+              making regressions harder to detect early.
+            </p>
+          </article>
+          <article class="card">
+            <span class="status risk">Planning risk</span>
+            <h3>Estimates become unreliable</h3>
+            <p>
+              Product work is harder to size when feature boundaries are not
+              reflected in the code.
+            </p>
+          </article>
+        </div>
+        <div class="decision-box">
+          <h3>Business framing</h3>
+          <p>
+            This rewrite is an investment in delivery speed, product quality,
+            and future platform flexibility, not a cosmetic code cleanup.
+          </p>
+        </div>
+      </section>
+
+      <section class="slide" id="approach">
+        <p class="eyebrow">Recommended approach</p>
+        <h2>Rewrite the business logic first, then the app shell</h2>
+        <p class="section-lead">
+          A big-bang rewrite would pause value delivery and increase launch
+          risk. The safer route is to extract stable product logic into
+          <strong>@linky/core</strong> and let the existing web app consume it
+          incrementally.
+        </p>
+        <div class="flow">
+          <article class="flow-step">
+            <h3>Stabilize</h3>
+            <p>
+              Capture current behavior in focused tests before changing the
+              implementation.
+            </p>
+          </article>
+          <article class="flow-step">
+            <h3>Extract</h3>
+            <p>
+              Move product rules into core with clear domain boundaries and
+              adapter interfaces.
+            </p>
+          </article>
+          <article class="flow-step">
+            <h3>Replace</h3>
+            <p>
+              Wire one feature flow at a time back into the existing web app.
+            </p>
+          </article>
+        </div>
+        <div class="principles">
+          <div class="principle">
+            <div class="check">✓</div>
+            <div>
+              <strong>No months-long rewrite freeze</strong>
+              <span>Product work continues while architecture improves.</span>
+            </div>
+          </div>
+          <div class="principle">
+            <div class="check">✓</div>
+            <div>
+              <strong>Core owns business decisions</strong>
+              <span>React, browser APIs, storage, and device bridges stay in the app layer.</span>
+            </div>
+          </div>
+          <div class="principle">
+            <div class="check">✓</div>
+            <div>
+              <strong>Each step is releasable</strong>
+              <span>Every chunk should leave the product working and tested.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide">
+        <p class="eyebrow">Operating model</p>
+        <h2>Separate product rules from delivery channels</h2>
+        <p class="section-lead">
+          The core package becomes the source of truth. The web app becomes one
+          consumer of that logic, alongside possible future native, desktop, or
+          service-side consumers.
+        </p>
+        <div class="grid two">
+          <article class="card">
+            <span class="status value">Core package</span>
+            <h3>What core owns</h3>
+            <p>
+              Identity derivation, contacts rules, messaging protocol,
+              wallet/token decisions, payment orchestration, validation,
+              retention, and domain tests.
+            </p>
+          </article>
+          <article class="card">
+            <span class="status plan">Web app</span>
+            <h3>What the app owns</h3>
+            <p>
+              React screens, routing, Evolu adapters, browser storage,
+              Capacitor bridges, service worker integration, translation, and
+              presentation.
+            </p>
+          </article>
+        </div>
+        <div class="decision-box">
+          <h3>Why this matters</h3>
+          <p>
+            Once business logic is portable and tested, future UI redesigns or
+            native product work become much smaller projects.
+          </p>
+        </div>
+      </section>
+
+      <section class="slide" id="chunks">
+        <p class="eyebrow">Replaceable chunks</p>
+        <h2>Break the rewrite into product domains</h2>
+        <p class="section-lead">
+          These chunks are small enough to migrate gradually, but meaningful
+          enough to give product and engineering clear ownership.
+        </p>
+        <div class="chunk-list">
+          <article class="chunk">
+            <div class="chunk-number">1</div>
+            <div>
+              <h3>Identity and owner lanes</h3>
+              <p>
+                Account creation, seed recovery, Nostr keys, Cashu seed, and
+                local-first owner routing.
+              </p>
+            </div>
+          </article>
+          <article class="chunk">
+            <div class="chunk-number">2</div>
+            <div>
+              <h3>Contacts</h3>
+              <p>
+                Contact rules, limits, unknown sender handling, blocking, and
+                profile identifiers.
+              </p>
+            </div>
+          </article>
+          <article class="chunk">
+            <div class="chunk-number">3</div>
+            <div>
+              <h3>Messaging protocol</h3>
+              <p>
+                Nostr message creation, parsing, replies, edits, reactions, and
+                malformed-message rejection.
+              </p>
+            </div>
+          </article>
+          <article class="chunk">
+            <div class="chunk-number">4</div>
+            <div>
+              <h3>Messaging storage and sync</h3>
+              <p>
+                Inbox sync, pending sends, dedupe, retention, reactions, and
+                unknown-thread migration.
+              </p>
+            </div>
+          </article>
+          <article class="chunk">
+            <div class="chunk-number">5</div>
+            <div>
+              <h3>Wallet inventory</h3>
+              <p>
+                Cashu token states, spendable balance, reserved/externalized
+                tokens, and mint grouping.
+              </p>
+            </div>
+          </article>
+          <article class="chunk">
+            <div class="chunk-number">6</div>
+            <div>
+              <h3>Cashu operations</h3>
+              <p>
+                Accept, check, restore, send, melt, top-up claim, counters, and
+                recovery paths.
+              </p>
+            </div>
+          </article>
+          <article class="chunk">
+            <div class="chunk-number">7</div>
+            <div>
+              <h3>Lightning and LNURL</h3>
+              <p>
+                Lightning address, invoices, withdraw flows, amount limits, and
+                payment capability checks.
+              </p>
+            </div>
+          </article>
+          <article class="chunk">
+            <div class="chunk-number">8</div>
+            <div>
+              <h3>Payments orchestration</h3>
+              <p>
+                Pay contact, pay unknown recipient, payment requests, decline,
+                publish, and result recording.
+              </p>
+            </div>
+          </article>
+          <article class="chunk">
+            <div class="chunk-number">9</div>
+            <div>
+              <h3>Notifications and telemetry</h3>
+              <p>
+                Payment notification classification and anonymous event
+                construction without blocking product flows.
+              </p>
+            </div>
+          </article>
+          <article class="chunk">
+            <div class="chunk-number">10</div>
+            <div>
+              <h3>App shell and routing</h3>
+              <p>
+                Replace the large composition layer only after core behavior is
+                proven and reusable.
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide">
+        <p class="eyebrow">Recommended sequence</p>
+        <h2>Start with low-risk, high-leverage domains</h2>
+        <p class="section-lead">
+          The first phases should improve confidence and reduce complexity
+          before touching the highest-risk money-moving flows.
+        </p>
+        <div class="timeline">
+          <article class="timeline-item">
+            <div class="timeline-label">Phase 1</div>
+            <div>
+              <h3>Identity and owner lanes</h3>
+              <p>
+                Finish the domain already started in core. This creates a clear
+                template for future extractions.
+              </p>
+            </div>
+          </article>
+          <article class="timeline-item">
+            <div class="timeline-label">Phase 2</div>
+            <div>
+              <h3>Contacts and messaging protocol</h3>
+              <p>
+                Move pure rules and protocol behavior first. This improves test
+                coverage without changing payment execution.
+              </p>
+            </div>
+          </article>
+          <article class="timeline-item">
+            <div class="timeline-label">Phase 3</div>
+            <div>
+              <h3>Messaging storage and sync</h3>
+              <p>
+                Replace the complex message domain after the protocol rules are
+                stable and independently tested.
+              </p>
+            </div>
+          </article>
+          <article class="timeline-item">
+            <div class="timeline-label">Phase 4</div>
+            <div>
+              <h3>Wallet inventory, Cashu, and Lightning</h3>
+              <p>
+                Move money-related behavior in narrow slices with strong
+                regression tests around current product behavior.
+              </p>
+            </div>
+          </article>
+          <article class="timeline-item">
+            <div class="timeline-label">Phase 5</div>
+            <div>
+              <h3>New app shell</h3>
+              <p>
+                Once core is stable, rebuild the web app around clean feature
+                modules instead of the current large composition layer.
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide" id="plan">
+        <p class="eyebrow">Execution playbook</p>
+        <h2>Every chunk follows the same migration loop</h2>
+        <p class="section-lead">
+          A repeatable process makes progress visible and keeps each change
+          releasable.
+        </p>
+        <div class="grid two">
+          <article class="card">
+            <span class="metric">01</span>
+            <h3>Capture behavior</h3>
+            <p>
+              Add characterization tests for the current flow so existing
+              product behavior is protected.
+            </p>
+          </article>
+          <article class="card">
+            <span class="metric">02</span>
+            <h3>Move rules to core</h3>
+            <p>
+              Extract domain types, validation, decisions, and use cases into
+              the core package.
+            </p>
+          </article>
+          <article class="card">
+            <span class="metric">03</span>
+            <h3>Add app adapters</h3>
+            <p>
+              Keep Evolu, browser storage, relays, and native bridges in the web
+              app behind clear interfaces.
+            </p>
+          </article>
+          <article class="card">
+            <span class="metric">04</span>
+            <h3>Replace one flow</h3>
+            <p>
+              Wire the existing UI to the new core use case and remove duplicate
+              old logic after validation.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide">
+        <p class="eyebrow">Success measures</p>
+        <h2>How we know the rewrite is working</h2>
+        <p class="section-lead">
+          Success should be visible in delivery, quality, and planning, not only
+          in cleaner folders.
+        </p>
+        <div class="grid three">
+          <article class="card">
+            <span class="status value">Delivery</span>
+            <h3>Faster feature changes</h3>
+            <p>
+              Product changes touch fewer files and require less unrelated
+              context.
+            </p>
+          </article>
+          <article class="card">
+            <span class="status value">Quality</span>
+            <h3>More behavior under tests</h3>
+            <p>
+              Critical payment, messaging, and identity rules can be tested
+              without running the whole web app.
+            </p>
+          </article>
+          <article class="card">
+            <span class="status value">Product</span>
+            <h3>Lower release anxiety</h3>
+            <p>
+              The team can change one domain without accidentally rewriting
+              unrelated product behavior.
+            </p>
+          </article>
+          <article class="card">
+            <span class="status value">Architecture</span>
+            <h3>Clear feature ownership</h3>
+            <p>
+              Code lives near the feature it supports, making onboarding and
+              debugging easier.
+            </p>
+          </article>
+          <article class="card">
+            <span class="status value">Strategy</span>
+            <h3>Reusable core</h3>
+            <p>
+              Future web, native, or service-side product surfaces can share the
+              same tested logic.
+            </p>
+          </article>
+          <article class="card">
+            <span class="status value">Risk</span>
+            <h3>No rewrite cliff</h3>
+            <p>
+              Progress ships incrementally instead of waiting for a single
+              high-risk replacement launch.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide">
+        <p class="eyebrow">Risks and controls</p>
+        <h2>The main risk is migration discipline</h2>
+        <p class="section-lead">
+          Gradual rewrites succeed when the team avoids parallel systems that
+          never converge. Each chunk needs a clear finish line.
+        </p>
+        <div class="grid two">
+          <article class="card">
+            <span class="status risk">Risk</span>
+            <h3>Core becomes another dumping ground</h3>
+            <p>
+              Control: core modules must be domain-based, tested, and free of
+              React, browser, and storage-specific code.
+            </p>
+          </article>
+          <article class="card">
+            <span class="status risk">Risk</span>
+            <h3>Old and new logic both remain forever</h3>
+            <p>
+              Control: every migration ticket includes deletion of the replaced
+              code path after validation.
+            </p>
+          </article>
+          <article class="card">
+            <span class="status risk">Risk</span>
+            <h3>Money flows regress</h3>
+            <p>
+              Control: payment and wallet chunks move later, in small slices,
+              with behavior tests before implementation changes.
+            </p>
+          </article>
+          <article class="card">
+            <span class="status risk">Risk</span>
+            <h3>Scope expands into a full redesign</h3>
+            <p>
+              Control: the app shell is last. Core extraction comes first, and
+              user-facing redesign work stays separate unless explicitly planned.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide" id="decision">
+        <p class="eyebrow">Decision request</p>
+        <h2>Approve a gradual rewrite as a product enablement track</h2>
+        <p class="section-lead">
+          The proposal is to fund the rewrite as ongoing incremental work, not
+          as a separate months-long project that blocks roadmap delivery.
+        </p>
+        <div class="grid three">
+          <article class="card">
+            <span class="status plan">Approve</span>
+            <h3>Architecture direction</h3>
+            <p>
+              Business logic moves into <strong>@linky/core</strong>; the web
+              app becomes an adapter and UI layer.
+            </p>
+          </article>
+          <article class="card">
+            <span class="status plan">Approve</span>
+            <h3>Migration order</h3>
+            <p>
+              Start with identity, contacts, and messaging protocol before
+              payment execution.
+            </p>
+          </article>
+          <article class="card">
+            <span class="status plan">Approve</span>
+            <h3>Definition of done</h3>
+            <p>
+              Every chunk ships with tests, web-app integration, and removal of
+              replaced duplicate logic.
+            </p>
+          </article>
+        </div>
+        <div class="decision-box">
+          <h3>Recommended first milestone</h3>
+          <p>
+            Complete the identity and owner-lane extraction, wire it through the
+            current web app, and use that as the repeatable template for all
+            later chunks.
+          </p>
+        </div>
+        <p class="small">
+          Prepared for business, product owner, and product management
+          discussion.
+        </p>
+      </section>
+
+      <footer class="footer">
+        Linky web app rewrite strategy · Static presentation page ·
+        docs/app-rewrite.html
+      </footer>
+    </main>
+  </body>
+</html>
