@@ -1,0 +1,890 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Vexl Product Delivery Report - Feb to May 2026</title>
+    <style>
+      :root {
+        --ink: #11140f;
+        --muted: #5d6658;
+        --paper: #fffaf0;
+        --wash: #f1e8d5;
+        --line: #d8cdb8;
+        --green: #1f704f;
+        --mint: #dcebd8;
+        --yellow: #f1c84b;
+        --orange: #d36f3d;
+        --blue: #2d6f8f;
+        --red: #b54838;
+        --shadow: 0 24px 70px rgba(17, 20, 15, 0.16);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 12% 16%, rgba(241, 200, 75, 0.25), transparent 24rem),
+          radial-gradient(circle at 85% 84%, rgba(31, 112, 79, 0.18), transparent 26rem),
+          linear-gradient(135deg, #efe4cf, #fbf5e8 54%, #e9f0e6);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        line-height: 1.45;
+      }
+
+      button {
+        font: inherit;
+      }
+
+      .topbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 10;
+        min-height: 58px;
+        padding: 0.65rem 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        background: rgba(255, 250, 240, 0.84);
+        border-bottom: 1px solid rgba(17, 20, 15, 0.1);
+        backdrop-filter: blur(18px);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        min-width: 0;
+        gap: 0.7rem;
+      }
+
+      .mark {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        flex: 0 0 auto;
+        background: linear-gradient(135deg, var(--yellow), var(--orange) 52%, var(--green) 53%);
+        box-shadow: inset 0 0 0 2px rgba(17, 20, 15, 0.16);
+      }
+
+      .brand strong,
+      .brand span {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .brand strong {
+        font-size: 0.9rem;
+      }
+
+      .brand span {
+        color: var(--muted);
+        font-size: 0.76rem;
+      }
+
+      .controls {
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+      }
+
+      .icon-button,
+      .print-button {
+        min-width: 2.25rem;
+        height: 2.25rem;
+        display: inline-grid;
+        place-items: center;
+        border: 1px solid rgba(17, 20, 15, 0.18);
+        border-radius: 8px;
+        color: var(--ink);
+        background: var(--paper);
+        cursor: pointer;
+      }
+
+      .print-button {
+        width: auto;
+        padding: 0 0.75rem;
+      }
+
+      .icon-button:hover,
+      .print-button:hover {
+        border-color: var(--green);
+      }
+
+      .counter {
+        min-width: 4.5rem;
+        text-align: center;
+        color: var(--muted);
+        font-size: 0.82rem;
+      }
+
+      .progress {
+        position: fixed;
+        top: 58px;
+        left: 0;
+        right: 0;
+        z-index: 11;
+        height: 4px;
+        background: rgba(17, 20, 15, 0.08);
+      }
+
+      .progress span {
+        display: block;
+        width: 0%;
+        height: 100%;
+        background: linear-gradient(90deg, var(--green), var(--yellow), var(--orange));
+        transition: width 160ms ease;
+      }
+
+      .deck {
+        width: min(100%, 1440px);
+        margin: 0 auto;
+        padding-top: 62px;
+      }
+
+      .slide {
+        min-height: 100vh;
+        padding: clamp(4.8rem, 7vw, 7.2rem) clamp(1rem, 5vw, 5rem) 3.4rem;
+        display: grid;
+        align-items: center;
+      }
+
+      .inner {
+        width: min(1120px, 100%);
+        margin: 0 auto;
+      }
+
+      .kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+        color: var(--green);
+        font-size: 0.78rem;
+        font-weight: 850;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .kicker::before {
+        content: "";
+        width: 2.2rem;
+        height: 0.18rem;
+        border-radius: 99px;
+        background: var(--green);
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin: 0;
+        line-height: 1.03;
+        letter-spacing: 0;
+      }
+
+      h1 {
+        max-width: 920px;
+        margin-top: 1.1rem;
+        font-size: clamp(3.1rem, 8vw, 7rem);
+      }
+
+      h2 {
+        max-width: 940px;
+        margin-top: 0.9rem;
+        font-size: clamp(2.15rem, 5.4vw, 4.6rem);
+      }
+
+      h3 {
+        font-size: clamp(1.24rem, 2.2vw, 1.85rem);
+      }
+
+      .lead {
+        max-width: 860px;
+        margin: 1.25rem 0 0;
+        color: var(--muted);
+        font-size: clamp(1.08rem, 2vw, 1.42rem);
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+        gap: clamp(1.5rem, 4vw, 4rem);
+        align-items: end;
+      }
+
+      .pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 2rem;
+      }
+
+      .pill {
+        padding: 0.52rem 0.78rem;
+        border: 1px solid rgba(17, 20, 15, 0.14);
+        border-radius: 99px;
+        background: rgba(255, 250, 240, 0.72);
+        color: var(--muted);
+        font-size: 0.88rem;
+      }
+
+      .snapshot {
+        display: grid;
+        gap: 0.85rem;
+        padding: 1rem;
+        border: 1px solid rgba(17, 20, 15, 0.14);
+        border-radius: 8px;
+        background: rgba(255, 250, 240, 0.76);
+        box-shadow: var(--shadow);
+      }
+
+      .signal {
+        display: grid;
+        grid-template-columns: 4rem 1fr;
+        align-items: center;
+        gap: 0.9rem;
+        min-height: 4.8rem;
+        padding: 0.9rem;
+        border: 1px solid rgba(17, 20, 15, 0.08);
+        border-radius: 8px;
+        background: var(--paper);
+      }
+
+      .shape {
+        width: 4rem;
+        height: 4rem;
+        border-radius: 8px;
+        background: var(--mint);
+        position: relative;
+      }
+
+      .shape::before,
+      .shape::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+      }
+
+      .shape::before {
+        inset: 0.58rem;
+        background: var(--green);
+      }
+
+      .shape::after {
+        right: 0.62rem;
+        bottom: 0.62rem;
+        width: 1.3rem;
+        height: 1.3rem;
+        background: var(--yellow);
+      }
+
+      .signal strong {
+        display: block;
+        font-size: 1.65rem;
+        line-height: 1;
+      }
+
+      .signal span {
+        display: block;
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      .grid {
+        display: grid;
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+
+      .cols-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .cols-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .cols-4 {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .card {
+        min-height: 100%;
+        padding: clamp(1rem, 2.2vw, 1.45rem);
+        border: 1px solid rgba(17, 20, 15, 0.13);
+        border-radius: 8px;
+        background: rgba(255, 250, 240, 0.82);
+      }
+
+      .green {
+        background: linear-gradient(180deg, rgba(220, 235, 216, 0.95), rgba(255, 250, 240, 0.88));
+      }
+
+      .yellow {
+        background: linear-gradient(180deg, rgba(241, 200, 75, 0.27), rgba(255, 250, 240, 0.88));
+      }
+
+      .orange {
+        background: linear-gradient(180deg, rgba(211, 111, 61, 0.2), rgba(255, 250, 240, 0.88));
+      }
+
+      .blue {
+        background: linear-gradient(180deg, rgba(45, 111, 143, 0.17), rgba(255, 250, 240, 0.88));
+      }
+
+      .card p {
+        margin: 0.7rem 0 0;
+        color: var(--muted);
+      }
+
+      ul {
+        margin: 1rem 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      li {
+        position: relative;
+        margin: 0.58rem 0;
+        padding-left: 1.12rem;
+        color: var(--muted);
+      }
+
+      li::before {
+        content: "";
+        position: absolute;
+        top: 0.68em;
+        left: 0;
+        width: 0.42rem;
+        height: 0.42rem;
+        border-radius: 50%;
+        background: var(--green);
+      }
+
+      .metric {
+        display: grid;
+        align-content: space-between;
+        min-height: 9.8rem;
+      }
+
+      .number {
+        font-size: clamp(2.6rem, 6vw, 5.4rem);
+        line-height: 0.95;
+        font-weight: 900;
+      }
+
+      .label {
+        margin-top: 0.8rem;
+        color: var(--muted);
+      }
+
+      .flow {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 0.8rem;
+        margin-top: 2rem;
+      }
+
+      .step {
+        min-height: 10rem;
+        padding: 1rem;
+        border: 1px solid rgba(17, 20, 15, 0.13);
+        border-radius: 8px;
+        background: rgba(255, 250, 240, 0.82);
+      }
+
+      .step span {
+        display: inline-grid;
+        place-items: center;
+        width: 2rem;
+        height: 2rem;
+        margin-bottom: 0.8rem;
+        border-radius: 50%;
+        background: var(--green);
+        color: var(--paper);
+        font-weight: 850;
+      }
+
+      .step p {
+        margin: 0.5rem 0 0;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .impact {
+        display: grid;
+        grid-template-columns: 0.78fr 1.22fr;
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+
+      .visual {
+        min-height: 25rem;
+        border: 1px solid rgba(17, 20, 15, 0.13);
+        border-radius: 8px;
+        padding: 1.4rem;
+        display: grid;
+        align-content: end;
+        color: var(--paper);
+        background: linear-gradient(145deg, rgba(31, 112, 79, 0.96), rgba(45, 111, 143, 0.64));
+      }
+
+      .visual strong {
+        display: block;
+        max-width: 18rem;
+        font-size: clamp(2.2rem, 4vw, 4rem);
+        line-height: 0.98;
+      }
+
+      .visual span {
+        display: block;
+        max-width: 22rem;
+        margin-top: 1rem;
+        color: rgba(255, 250, 240, 0.78);
+      }
+
+      .timeline {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+
+      .month {
+        min-height: 18rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .month::before {
+        content: "";
+        position: absolute;
+        left: 1.2rem;
+        right: 1.2rem;
+        bottom: 1.2rem;
+        height: var(--bar);
+        max-height: 60%;
+        border-radius: 8px 8px 0 0;
+        background: linear-gradient(180deg, var(--yellow), var(--orange));
+        opacity: 0.34;
+      }
+
+      .month > * {
+        position: relative;
+      }
+
+      .commit-count {
+        display: inline-block;
+        margin-top: 0.8rem;
+        padding: 0.35rem 0.55rem;
+        border-radius: 8px;
+        background: var(--ink);
+        color: var(--paper);
+        font-weight: 850;
+      }
+
+      .quote {
+        margin-top: 1.5rem;
+        padding: 1.15rem;
+        border-left: 0.35rem solid var(--orange);
+        background: rgba(255, 250, 240, 0.76);
+        color: var(--muted);
+        font-size: clamp(1.08rem, 2vw, 1.32rem);
+      }
+
+      code {
+        padding: 0.1rem 0.25rem;
+        border-radius: 4px;
+        color: var(--ink);
+        background: rgba(17, 20, 15, 0.06);
+      }
+
+      @media (max-width: 980px) {
+        .hero,
+        .impact {
+          grid-template-columns: 1fr;
+        }
+
+        .cols-4,
+        .cols-3,
+        .timeline,
+        .flow {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 680px) {
+        .brand span {
+          white-space: normal;
+        }
+
+        .print-button {
+          display: none;
+        }
+
+        .slide {
+          padding-inline: 1rem;
+        }
+
+        .cols-4,
+        .cols-3,
+        .cols-2,
+        .timeline,
+        .flow {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media print {
+        body {
+          background: var(--paper);
+        }
+
+        .topbar,
+        .progress {
+          display: none;
+        }
+
+        .deck {
+          width: 100%;
+          padding-top: 0;
+        }
+
+        .slide {
+          min-height: auto;
+          page-break-after: always;
+          padding: 1.2cm;
+        }
+
+        .card,
+        .snapshot,
+        .visual {
+          box-shadow: none;
+          break-inside: avoid;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <div class="mark" aria-hidden="true"></div>
+        <div>
+          <strong>Vexl Product Delivery Report</strong>
+          <span>Last three months: Feb 20 to May 20, 2026</span>
+        </div>
+      </div>
+      <div class="controls">
+        <button class="icon-button" id="prev" type="button" aria-label="Previous slide">&#8592;</button>
+        <span class="counter" id="counter">1 / 14</span>
+        <button class="icon-button" id="next" type="button" aria-label="Next slide">&#8594;</button>
+        <button class="print-button" id="print" type="button">Print</button>
+      </div>
+    </header>
+    <div class="progress" aria-hidden="true"><span id="progress"></span></div>
+
+    <main class="deck">
+      <section class="slide" data-title="Title">
+        <div class="inner hero">
+          <div>
+            <span class="kicker">Business summary</span>
+            <h1>What changed in Vexl over the last three months</h1>
+            <p class="lead">
+              A non-technical readout of product work found in the git history, focused on user-facing
+              improvements, operational readiness, and business impact.
+            </p>
+            <div class="pills">
+              <span class="pill">Source: local git history</span>
+              <span class="pill">Branch: feat/remove-unused-locale-string</span>
+              <span class="pill">Generated: May 20, 2026</span>
+            </div>
+          </div>
+          <aside class="snapshot" aria-label="Report snapshot">
+            <div class="signal">
+              <div class="shape" aria-hidden="true"></div>
+              <div><strong>234</strong><span>commits reviewed in scope</span></div>
+            </div>
+            <div class="signal">
+              <div class="shape" aria-hidden="true"></div>
+              <div><strong>4</strong><span>release commits identified</span></div>
+            </div>
+            <div class="signal">
+              <div class="shape" aria-hidden="true"></div>
+              <div><strong>173</strong><span>commits touching mobile UI or localization</span></div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="slide" data-title="Executive Snapshot">
+        <div class="inner">
+          <span class="kicker">Executive snapshot</span>
+          <h2>The period was dominated by a major app redesign and marketplace upgrade</h2>
+          <p class="lead">
+            Vexl moved toward a more polished, consistent, and guided product experience while also
+            improving notifications, trust flows, localization, and operational stability.
+          </p>
+          <div class="grid cols-4">
+            <article class="card metric green"><div class="number">1</div><div class="label">Unified redesign foundation for the mobile app</div></article>
+            <article class="card metric yellow"><div class="number">2</div><div class="label">Marketplace and offer discovery improvements</div></article>
+            <article class="card metric orange"><div class="number">3</div><div class="label">More guided chat and trading flows</div></article>
+            <article class="card metric blue"><div class="number">4</div><div class="label">Better notification, localization, and support readiness</div></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="Product Themes">
+        <div class="inner">
+          <span class="kicker">Product themes</span>
+          <h2>Six business themes explain most of the work</h2>
+          <div class="grid cols-3">
+            <article class="card green"><h3>Design modernization</h3><p>New visual building blocks, refreshed screens, dark and light mode behavior, and removal of older UI patterns.</p></article>
+            <article class="card yellow"><h3>Marketplace growth</h3><p>New marketplace screens, map view, filters, offer details, offer creation, and stronger empty or loading states.</p></article>
+            <article class="card orange"><h3>Safer trade coordination</h3><p>Chat redesign, trade checklist, trade calculator, identity reveal, contact reveal, and clearer chat-end states.</p></article>
+            <article class="card blue"><h3>User activation</h3><p>Redesigned login, post-login, terms, FAQ, account, contact preferences, feedback, and add-community journeys.</p></article>
+            <article class="card green"><h3>Lifecycle messaging</h3><p>Notification center, product announcements, backoffice controls, and safer targeting by app version.</p></article>
+            <article class="card yellow"><h3>Reliability and readiness</h3><p>Fixes for disappearing offers, club offers, maps, pagination, translations, dependency updates, and release readiness.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="Redesign">
+        <div class="inner">
+          <span class="kicker">App experience</span>
+          <h2>A new design foundation was built and then applied across key screens</h2>
+          <p class="lead">The work creates a more consistent, recognizable, and maintainable Vexl experience for users.</p>
+          <div class="flow">
+            <article class="step"><span>1</span><h3>Visual system</h3><p>New themes, typography, buttons, icons, tabs, dialogs, tags, cards, inputs, menus, and alerts.</p></article>
+            <article class="step"><span>2</span><h3>Core surfaces</h3><p>Marketplace, offer detail, chat, account, FAQ, terms, contact preferences, and club screens.</p></article>
+            <article class="step"><span>3</span><h3>Device fit</h3><p>Dark and light mode detection, Android monochrome icon support, and refreshed graphics.</p></article>
+            <article class="step"><span>4</span><h3>Polish</h3><p>Loading states, spacing fixes, animated graphics, warning screens, and old component cleanup.</p></article>
+            <article class="step"><span>5</span><h3>Scale</h3><p>Reusable pieces make future screens faster to build and easier to keep consistent.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="Marketplace">
+        <div class="inner">
+          <span class="kicker">Marketplace and offers</span>
+          <h2>Offer discovery became richer, clearer, and more reliable</h2>
+          <div class="impact">
+            <div class="visual"><strong>Find better offers faster</strong><span>Marketplace work combined discovery, trust signals, and offer quality improvements.</span></div>
+            <div class="grid" style="margin-top:0">
+              <article class="card yellow"><h3>New discovery experience</h3><ul><li>Marketplace screen, offer list, offer detail, and map view.</li><li>Filter screen and logic for narrowing relevant offers.</li><li>Loading, empty, and unlocked marketplace states.</li></ul></article>
+              <article class="card green"><h3>Better offer actions</h3><ul><li>Create-offer flow redesign and location radius improvements.</li><li>Offer cards visually change once a request is made.</li><li>Trade calculator redesign connected to offer and trade flows.</li></ul></article>
+              <article class="card orange"><h3>More reliable availability</h3><ul><li>Fixes for offers disappearing after updates and in club scenarios.</li><li>Offer pagination and migration reliability improvements.</li><li>Map and radius-selection fixes to reduce confusion.</li></ul></article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="Chat And Trading">
+        <div class="inner">
+          <span class="kicker">Chat and trading</span>
+          <h2>The trade conversation is becoming a guided flow, not just a message thread</h2>
+          <div class="grid cols-2">
+            <article class="card orange"><h3>Guided trading</h3><ul><li>Trading checklist added inside chat.</li><li>Trade calculator connected to checklist decisions.</li><li>Network, date, time, and amount decisions improved.</li><li>Better wording and clearer reminders.</li></ul></article>
+            <article class="card blue"><h3>Safer identity and contact steps</h3><ul><li>Identity reveal and contact reveal flows were added and refined.</li><li>Identity setup and reveal bugs were fixed.</li><li>Chat ended flow makes finished conversations clearer.</li><li>Decline-chat-request design work was added.</li></ul></article>
+            <article class="card green"><h3>Better chat usability</h3><ul><li>Offer detail and chat detail screens were added.</li><li>Reply and copy actions improved everyday messaging.</li><li>Search navigation scrolls directly to the selected message.</li><li>Better handling when message sending fails.</li></ul></article>
+            <article class="card yellow"><h3>Community context in chat</h3><ul><li>Clubs can appear in the chat view.</li><li>Other-side name display was improved.</li><li>VexlBot message presentation was refreshed.</li><li>Legacy chat design patterns were removed.</li></ul></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="Activation">
+        <div class="inner">
+          <span class="kicker">Activation and self-service</span>
+          <h2>Onboarding, account, help, and contact management were refreshed</h2>
+          <p class="lead">These changes reduce friction for new users and make common support or trust-related tasks easier to understand.</p>
+          <div class="grid cols-3">
+            <article class="card green"><h3>Login and post-login</h3><p>Redesigned login and post-login flow, SMS autofill support, better completion handling, and loading indication after setup.</p></article>
+            <article class="card yellow"><h3>Trust and education</h3><p>Terms of Service, FAQ, full-screen warnings, and account screens were redesigned and navigation bugs were fixed.</p></article>
+            <article class="card orange"><h3>Contacts and communities</h3><p>Contact preferences redesign, add-contact flow, add-community page redesign, and community-related cleanup.</p></article>
+            <article class="card blue"><h3>Feedback and support</h3><p>Feedback form redesign and clearer error or loading behavior make it easier for users to report and recover from problems.</p></article>
+            <article class="card green"><h3>Profile and account</h3><p>Account page work, identity-setting fixes, and profile cleanup support a cleaner personal settings experience.</p></article>
+            <article class="card yellow"><h3>Donation experience</h3><p>Donation-related screens and visuals were brought into the redesigned experience.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="Notifications">
+        <div class="inner">
+          <span class="kicker">Notifications and operations</span>
+          <h2>Vexl gained stronger tools for lifecycle messaging and product announcements</h2>
+          <div class="grid cols-2">
+            <article class="card blue"><h3>User-facing messaging</h3><ul><li>Notification center was added.</li><li>Product announcements can be issued as push notifications.</li><li>Notification copy was updated.</li><li>Content notifications were added.</li></ul></article>
+            <article class="card green"><h3>Business controls</h3><ul><li>Backoffice section added for issuing product notifications.</li><li>Notifications can respect client version constraints.</li><li>Marketing and system notification tokens were added.</li><li>Notification lists are ordered for easier review.</li></ul></article>
+            <article class="card yellow"><h3>Safer operations</h3><ul><li>Admin token handling was improved.</li><li>Batch notification insertion was fixed.</li><li>Fallback behavior for product notification history was corrected.</li></ul></article>
+            <article class="card orange"><h3>Why it matters</h3><p>The team can communicate product changes more precisely, avoid sending unsupported messages to old app versions, and manage announcements with less operational risk.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="Trust And Community">
+        <div class="inner">
+          <span class="kicker">Trust and community</span>
+          <h2>Contact, club, and community flows became more dependable</h2>
+          <div class="grid cols-3">
+            <article class="card green"><h3>Verified contacts</h3><p>Verified contacts support was added, strengthening the trust layer around who users can connect with.</p></article>
+            <article class="card yellow"><h3>Contact freshness</h3><p>Inactive contacts are filtered more intelligently, and reactivation can trigger user notification behavior.</p></article>
+            <article class="card orange"><h3>Club reliability</h3><p>Fixes covered club notifications, club offer refresh, offers disappearing from clubs, and moderator invite actions.</p></article>
+            <article class="card blue"><h3>Club redesign</h3><p>Club detail screens were replaced with the redesigned version, and clubs were made more visible in chat context.</p></article>
+            <article class="card green"><h3>Common friends</h3><p>Common-friends screens and related club offer behavior were improved, supporting the social-trust model.</p></article>
+            <article class="card yellow"><h3>Community growth</h3><p>Add-community and contact-preference redesigns make it easier to shape a relevant Vexl network.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="Reliability">
+        <div class="inner">
+          <span class="kicker">Reliability and release readiness</span>
+          <h2>Several changes reduced product risk while keeping the platform current</h2>
+          <div class="grid cols-2">
+            <article class="card green"><h3>Performance and app stability</h3><ul><li>Offer encryption was made faster.</li><li>Heavy diagnostic files are loaded only when needed.</li><li>List rendering performance was improved.</li><li>Expo and related mobile platform dependencies were updated.</li></ul></article>
+            <article class="card yellow"><h3>Bug fixes users would notice</h3><ul><li>Offers disappearing after update or in club scenarios.</li><li>Club offer refresh and club notification scheduling.</li><li>FAQ navigation, contacts import loading, and map radius overlap.</li><li>Post-login flow display for updated app versions.</li></ul></article>
+            <article class="card blue"><h3>Operational hygiene</h3><ul><li>Dashboard fixes and backoffice diagnostics.</li><li>Development setup improvements and better observability tools.</li><li>Release version increments and release commits for the mobile app.</li></ul></article>
+            <article class="card orange"><h3>Security and maintenance</h3><ul><li>Multiple dependency updates landed across web, backend, and tooling packages.</li><li>Outdated assets and unused code were removed.</li><li>Offer migration behavior was made safer to rerun.</li></ul></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="Localization">
+        <div class="inner">
+          <span class="kicker">Localization and readiness</span>
+          <h2>Translation coverage and language-file hygiene improved</h2>
+          <p class="lead">The localization work supports a redesigned product being launched consistently across markets.</p>
+          <div class="grid cols-3">
+            <article class="card metric green"><div class="number">24</div><div class="label">language files updated in the latest translation pass</div></article>
+            <article class="card yellow"><h3>Missing translations filled</h3><p>Recent strings were added across supported languages so redesigned screens do not ship with obvious text gaps.</p></article>
+            <article class="card orange"><h3>Unused text removed</h3><p>Old or unused localization keys were removed, reducing maintenance noise and translation overhead.</p></article>
+            <article class="card blue"><h3>Crowdin workflow documented</h3><p>The translation workflow was documented, making it easier to repeat the process reliably.</p></article>
+            <article class="card green"><h3>Reusable localization tools</h3><p>Skills were added for finding unused keys and filling translations across languages.</p></article>
+            <article class="card yellow"><h3>Business value</h3><p>Translation cleanup helps the team ship new product surfaces with fewer language-related regressions.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="Timeline">
+        <div class="inner">
+          <span class="kicker">Timeline</span>
+          <h2>How the work unfolded</h2>
+          <p class="lead">Commit activity is shown by commit date. May is especially high because a large redesign branch was integrated during the month.</p>
+          <div class="timeline">
+            <article class="card month" style="--bar: 18%"><h3>March 2026</h3><span class="commit-count">32 commits</span><ul><li>Mobile release work around version 1.41.x.</li><li>Offer, club, contact, and notification reliability fixes.</li><li>Platform updates and first redesign foundation work.</li></ul></article>
+            <article class="card month" style="--bar: 13%"><h3>April 2026</h3><span class="commit-count">22 commits</span><ul><li>Marketplace, offer-detail, filter, and create-offer work continued.</li><li>Dependency and security maintenance landed.</li><li>Offer migration and pagination reliability improved.</li></ul></article>
+            <article class="card month" style="--bar: 60%"><h3>May 2026</h3><span class="commit-count">181 commits</span><ul><li>Large redesign integration across mobile app screens.</li><li>Notification center and product announcement tooling.</li><li>Localization cleanup, translations, and final UX polish.</li></ul></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="Business Impact">
+        <div class="inner">
+          <span class="kicker">Business impact</span>
+          <h2>The work improves product confidence in four concrete ways</h2>
+          <div class="grid cols-2">
+            <article class="card green"><h3>More polished product perception</h3><p>The redesigned app should feel more coherent and current, which matters for trust in a product built around private peer-to-peer exchange.</p></article>
+            <article class="card yellow"><h3>Better marketplace conversion paths</h3><p>Users can browse, filter, map, inspect, create, and act on offers with fewer dead ends and clearer states.</p></article>
+            <article class="card orange"><h3>Safer trading behavior</h3><p>The chat checklist, calculator, identity steps, and clearer end states help users make decisions with more structure.</p></article>
+            <article class="card blue"><h3>Stronger launch and operations capability</h3><p>Version-aware notifications, backoffice controls, localization workflows, and bug fixes reduce launch risk for future product changes.</p></article>
+          </div>
+          <div class="quote">
+            Bottom line: the last three months look like a coordinated push to modernize the Vexl app,
+            improve marketplace trust and liquidity paths, and prepare the product for broader, cleaner
+            communication with users.
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="Appendix">
+        <div class="inner">
+          <span class="kicker">Appendix</span>
+          <h2>Scope, method, and caveats</h2>
+          <div class="grid cols-2">
+            <article class="card"><h3>Scope used</h3><ul><li>Repository: local Vexl worktree.</li><li>Branch: <code>feat/remove-unused-locale-string</code>.</li><li>HEAD reviewed: <code>db4b8fcf6</code>.</li><li>Date window: Feb 20 to May 20, 2026.</li><li>Command basis: <code>git log --since='2026-02-20'</code>.</li></ul></article>
+            <article class="card"><h3>How this was summarized</h3><ul><li>Commit subjects and affected areas were grouped into business themes.</li><li>Technical implementation details were intentionally de-emphasized.</li><li>Duplicate or repeated redesign commits were treated as one product theme.</li><li>Dependency and tooling work was summarized as reliability and readiness.</li></ul></article>
+            <article class="card"><h3>Important caveat</h3><p>Git history shows what was committed, not necessarily what has been released to every user. Release status should be confirmed separately before using this as public release messaging.</p></article>
+            <article class="card"><h3>Reading the activity numbers</h3><p>May contains a large integration of redesign work. The count is useful for scope, but the business story is better represented by themes than by raw commit volume.</p></article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const counter = document.getElementById("counter");
+      const progress = document.getElementById("progress");
+      const prev = document.getElementById("prev");
+      const next = document.getElementById("next");
+      const printButton = document.getElementById("print");
+      let current = 0;
+
+      function clamp(index) {
+        return Math.max(0, Math.min(slides.length - 1, index));
+      }
+
+      function setSlide(index, shouldScroll = true) {
+        current = clamp(index);
+        counter.textContent = `${current + 1} / ${slides.length}`;
+        progress.style.width = `${((current + 1) / slides.length) * 100}%`;
+        prev.disabled = current === 0;
+        next.disabled = current === slides.length - 1;
+        if (shouldScroll) slides[current].scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+
+      function nearestSlide() {
+        const midpoint = window.scrollY + window.innerHeight / 2;
+        return slides.reduce(
+          (best, slide, index) => {
+            const center = slide.offsetTop + slide.offsetHeight / 2;
+            const distance = Math.abs(center - midpoint);
+            return distance < best.distance ? { index, distance } : best;
+          },
+          { index: 0, distance: Infinity },
+        ).index;
+      }
+
+      let scrollTimer = 0;
+      window.addEventListener("scroll", () => {
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(() => setSlide(nearestSlide(), false), 60);
+      });
+
+      prev.addEventListener("click", () => setSlide(current - 1));
+      next.addEventListener("click", () => setSlide(current + 1));
+      printButton.addEventListener("click", () => window.print());
+
+      window.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowRight" || event.key === "PageDown" || event.key === " ") {
+          event.preventDefault();
+          setSlide(current + 1);
+        }
+        if (event.key === "ArrowLeft" || event.key === "PageUp") {
+          event.preventDefault();
+          setSlide(current - 1);
+        }
+        if (event.key === "Home") {
+          event.preventDefault();
+          setSlide(0);
+        }
+        if (event.key === "End") {
+          event.preventDefault();
+          setSlide(slides.length - 1);
+        }
+      });
+
+      setSlide(0, false);
+    </script>
+  </body>
+</html>
