@@ -3,5 +3,11 @@
   "installCommand": null,
   "buildCommand": null,
   "outputDirectory": "site",
-  "trailingSlash": true
+  "trailingSlash": true,
+  "rewrites": [
+    {
+      "source": "/daveos/",
+      "destination": "/index.html"
+    }
+  ]
 }

@@ -110,16 +110,27 @@ function setLoggedIn(loggedIn) {
   if (!loggedIn) loginBtn.focus();
 }
 
-loginBtn.addEventListener("click", () => {
-  setLoggedIn(true);
-  if (openWins().length === 0 && !mobile.matches)
-    for (const id of ["win-history", "win-how", "win-contact"]) openWin(id);
-});
-document.getElementById("logout-btn").addEventListener("click", () => setLoggedIn(false));
+const DESKTOP_PATH = "/daveos/";
+const onDesktopPath = () => location.pathname.startsWith(DESKTOP_PATH);
 
-setLoggedIn(false);
+function syncWithLocation() {
+  setLoggedIn(onDesktopPath());
+  if (onDesktopPath() && openWins().length === 0 && !mobile.matches)
+    for (const id of ["win-history", "win-how", "win-contact"]) openWin(id);
+}
+
+function navigate(path) {
+  history.pushState(null, "", path);
+  syncWithLocation();
+}
+
+loginBtn.addEventListener("click", () => navigate(DESKTOP_PATH));
+document.getElementById("logout-btn").addEventListener("click", () => navigate("/"));
+addEventListener("popstate", syncWithLocation);
+
 const linkedWin = wins.find((win) => `#${win.id}` === location.hash);
-if (linkedWin || new URLSearchParams(location.search).has("desktop")) loginBtn.click();
+if (linkedWin && !onDesktopPath()) history.replaceState(null, "", DESKTOP_PATH + location.hash);
+syncWithLocation();
 if (linkedWin) openWin(linkedWin.id);
 
 document.querySelectorAll("[data-copy]").forEach((button) =>
