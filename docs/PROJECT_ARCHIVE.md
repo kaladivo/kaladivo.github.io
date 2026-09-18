@@ -1,6 +1,6 @@
 # Hall of fame - Project archive
 
-Seeing I have only so much mental capacity, here are some projects I had to park. I might return to them in the future or keep them in this hall of fame forever
+Seeing I have only so much mental capacity, here are some projects I had to park. I might return to them in the future or keep them in this hall of fame forever.
 
 ## Qrterminal 
 https://qrterminal.cz/

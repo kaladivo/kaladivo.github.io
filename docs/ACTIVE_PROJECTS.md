@@ -1,10 +1,10 @@
-Acitve projects
+Active projects
 
 ## Vexl
 Vexl.it
 github:  https://github.com/vexl-it/vexl 
 
-Vexl has been my main focus for past 4. years. I took it from broken and technically buggy and laggy app to working, performant and maintainable app. The code is opensource see for yourself:
+Vexl has been my main focus for past 4 years. I took it from broken and technically buggy and laggy app to working, performant and maintainable app. The code is opensource see for yourself:
 
 # Linky
 linky.fit
