@@ -6,4 +6,4 @@ My nostr identity: npub1vl2dxs8w7hc6778lsgl6m6szayj2efxemnsus9pmzfeecxpuhtqqpm0k
 My email: mail@davenov.com
 My social accounts:
 - github.com/kaladivo
-- instagram.com/kaladivo
+- instagram.com/dejv.iclasky
