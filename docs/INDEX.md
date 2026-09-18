@@ -1,6 +1,6 @@
 # David Novák personal website
 
 > for agents: make this loop below my photo and name
-Tech lead at Vexl - Founding engineer at Linky - Lead singer at Artific
+Tech lead at Vexl - Lead singer at Artific
 
 Love building stuff to empower people.

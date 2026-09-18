@@ -223,7 +223,7 @@ h1 span {
 }
 .ticker__run { display: flex; width: max-content; animation: ticker 26s linear infinite; }
 .ticker:hover .ticker__run { animation-play-state: paused; }
-.ticker ul { display: flex; margin: 0; padding: 0; list-style: none; }
+.ticker ul { display: flex; justify-content: space-around; min-width: 100vw; margin: 0; padding: 0; list-style: none; }
 .ticker li {
   padding: 1.1rem 0;
   font: 900 clamp(1.3rem, 2.6vw, 2.1rem)/1 var(--led);
@@ -605,7 +605,7 @@ blockquote p::after { content: "”"; }
   .record__disc, .player__disc, .ticker__run { animation: none !important; }
   .record--hero { animation-duration: 0s; animation-delay: 0s; }
   .ticker__run { width: auto; }
-  .ticker ul { flex-wrap: wrap; justify-content: center; padding: .4rem 1rem; }
+  .ticker ul { min-width: 0; flex-wrap: wrap; justify-content: center; padding: .4rem 1rem; }
   .ticker ul[aria-hidden] { display: none; }
   .ticker li { padding: .5rem 0; }
   .deck__arm, .btn, .tracklist a { transition: none; }
