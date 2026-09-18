@@ -5,7 +5,7 @@
 Dec 2022 - present
 SatoshiLabs
 
-Working on fully open source app for peer to peer bitcoin trading called Vexl. I delivered fully rewritten app in React Native and rewrote the backend fully into React Native. I am also giving talks at meetups and conferences. I am helping with the product definitions and with feature requests.
+Working on fully open source app for peer to peer bitcoin trading called Vexl. I delivered fully rewritten app in React Native and rewrote the backend fully into node. I am also giving talks at meetups and conferences. I am helping with the product definitions and with feature requests.
 
 My interest in exploring new opportunities stems from my current role at a nonprofit, while I deeply value working on an open-source project and find the product profoundly meaningful, I am eager to contribute to a growing product and collaborate within a larger team.
 
