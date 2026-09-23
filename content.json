@@ -1,0 +1,187 @@
+{
+  "name": "David Novák",
+  "tagline": "personal website",
+  "motto": "Love building stuff to empower people.",
+  "roles": ["Tech lead at Vexl", "Founding engineer at Linky.fit", "Lead singer at Artific"],
+
+  "howIWork": {
+    "id": "how-i-work",
+    "title": "HOW I WORK",
+    "body": [
+      "> My goal is to multiply other team members",
+      "In my view, the role of engineers is not to write code anymore, but to \"multiply\" other team members (or the community in case of open source). I enjoy setting up the repo, code and tooling around agentic development. If this is done correctly, anyone with access to the source code can make good and working contributions. In the age of AI this is what I believe we should strive towards.",
+      "> Tasks that are well defined and articulated are for clankers. Humans are here to understand the broader context and define what needs to be done.",
+      "I love doing work where I am not just implementing well defined tickets. I don't view myself as a programmer (although I have always spent most of my time around code). I view myself more like a problem solver specialized in technical solutions. I strive to understand the product and needs of users and others in the team to find solutions that best move us towards fulfilling them."
+    ]
+  },
+
+  "activeProjects": {
+    "title": "Active projects",
+    "items": [
+      {
+        "id": "vexl",
+        "title": "Vexl",
+        "links": ["[Vexl.it](https://vexl.it)", "github: [https://github.com/vexl-it/vexl](https://github.com/vexl-it/vexl)"],
+        "body": ["Vexl has been my main focus for past 4 years. I took it from broken and technically buggy and laggy app to working, performant and maintainable app. The code is opensource see for yourself:"]
+      },
+      {
+        "id": "linky",
+        "title": "Linky",
+        "links": ["[linky.fit](https://linky.fit)", "github: [https://github.com/linky-fit/linky.](https://github.com/linky-fit/linky)"],
+        "body": ["Fun project with friend. Focusing on decentralized messaging and cashu payments. We have over 200 users and growing. Working with cool technologies like: Nostr, evolu and cashu. My main focus is on desloping the codebase, fixing bugs and making the app secure enough so it can be used by even wider audience."]
+      }
+    ]
+  },
+
+  "experience": {
+    "title": "Professional Experiences",
+    "items": [
+      {
+        "id": "tech-lead-at-vexl",
+        "title": "Tech lead at Vexl",
+        "dates": "Dec 2022 - present",
+        "company": "SatoshiLabs",
+        "body": [
+          "Working on fully open source app for peer to peer bitcoin trading called Vexl. I delivered fully rewritten app in React Native and rewrote the backend fully into node. I am also giving talks at meetups and conferences. I am helping with the product definitions and with feature requests.",
+          "My interest in exploring new opportunities stems from my current role at a nonprofit, while I deeply value working on an open-source project and find the product profoundly meaningful, I am eager to contribute to a growing product and collaborate within a larger team.",
+          "I have honed my skills in effectTS, with a strong focus on type-driven development. The code I have developed is publicly accessible at: [https://github.com/vexl-it.](https://github.com/vexl-it)"
+        ]
+      },
+      {
+        "id": "tech-lead-albert",
+        "title": "Tech Lead of Albert Loyalty App",
+        "dates": "Oct 2021 - Nov 2022",
+        "company": "Creative Dock",
+        "body": [
+          "I took the role of Tech Lead. I have created a plan to improve performance and decrease technical debt of the app. I was also defining acceptation criteria for specifications of new features. The biggest challenge of that time was helping other developers grow and making sure estimates and specifications are well thought through."
+        ]
+      },
+      {
+        "id": "full-stack-albert",
+        "title": "Full stack developer of Albert Loyalty App",
+        "dates": "Dec 2020 - Oct, 2021",
+        "company": "Creative Dock",
+        "body": [
+          "At first, I was working on backoffice (CMS) and in a team of FE developers (React Native). Later I also started working on backend in Kotlin + Spring Boot. I learned a lot on this project:",
+          [
+            "Writing backend that can handle a big traffic load",
+            "Doing code reviews",
+            "Scrum (rituals, working in sprints...)",
+            "Fully automated CI/CD deployment.",
+            "Working with Kubernetes as a developer.",
+            "Multiservice backend architecture",
+            "Reactive programming"
+          ]
+        ]
+      },
+      {
+        "id": "web-development",
+        "title": "Web development & working on side projects",
+        "dates": "May 2020 - Dec 2020",
+        "body": [
+          "Was mainly creating websites for Creative Dock. I was also trying to create a company with a few of my friends called Sidario. Some of my work at that time was:",
+          [
+            "ameside.cz, https://filmhunters.cz, womacinterior.cz - presentation websites GravCMS",
+            "seba.swiss - bank website written in React and Gatsby",
+            "filloapp.com - App that should help companies with creating documents (React + NodeJS Koa)",
+            "clipvo.com - a simple app for creating podcasts written in React"
+          ]
+        ]
+      },
+      {
+        "id": "kontakto",
+        "title": "Kontakto - Full stack developer",
+        "dates": "Mar, 2018 - Mar, 2020",
+        "company": "Creative Dock",
+        "body": [
+          "The startup that, sadly, did not succeed. We were working on an app that connects to the company's G Suite account and scrapes employees' emails. These data were then used to create a graph database of people and companies. It should've helped with figuring out who from my company communicated with people from different companies.",
+          "My role was developing on React Native and NodeJS backend (scraping was done by data specialists). An interesting technology we worked on was Neo4j - database we used to store relations between persons."
+        ]
+      },
+      {
+        "id": "high-school",
+        "title": "High school oriented at programming & working on side projects",
+        "dates": "Sept 2013 - Dec 2017",
+        "body": [
+          "I started learning coding in 9th grade at elementary school. I started with Android development in Java. Then added web development (HTML, CSS, JS). While studying programming oriented field at high school I started doing some web development for clients (mainly coding templates from scratch in WordPress later using Grav CMS and learning the basics of Laravel framework).",
+          "Some of my work from that time includes:",
+          [
+            "nasedacice.cz - simple website for citizens' initiative of Dačice town - written in GravCMS",
+            "marycohr.cz, panestetic.cz, biolinejato.cz - just note that, sadly, most of those websites are not properly maintained anymore since the contract ended - written in WordPress",
+            "nfctron.com - Native Android app for Kiosks at festivals"
+          ]
+        ]
+      }
+    ]
+  },
+
+  "archive": {
+    "id": "hall-of-fame",
+    "title": "Hall of fame - Project archive",
+    "intro": "Seeing I have only so much mental capacity, here are some projects I had to park. I might return to them in the future or keep them in this hall of fame forever.",
+    "items": [
+      {
+        "id": "qrterminal",
+        "title": "Qrterminal",
+        "links": ["[https://qrterminal.cz/](https://qrterminal.cz/)"],
+        "body": ["Simple payments without fees to credit card companies."]
+      },
+      {
+        "id": "hopnaworkshop",
+        "title": "Hop na workshop",
+        "links": ["[https://hopnaworkshop.cz/](https://hopnaworkshop.cz/)"],
+        "body": ["Simple workshop system so workshop hosts can manage and keep track of workshops."]
+      },
+      {
+        "id": "fillo",
+        "title": "FilloApp",
+        "body": ["Tool for businesses to manage their documents, filling them up from templates and printing them. Was used by 3 clients and was closed down in Aug 2026."]
+      }
+    ]
+  },
+
+  "personal": {
+    "title": "Personal life",
+    "intro": "This website is dedicated to my professional presentation but I am not just an engineer.",
+    "items": [
+      {
+        "id": "music",
+        "title": "Music",
+        "body": ["I have always been a very music oriented person. I play piano, sing and know some guitar. I have a few singles out with my band."],
+        "links": [
+          "video: [https://youtu.be/fDJlwtHrgn8](https://youtu.be/fDJlwtHrgn8)",
+          "my band: [https://open.spotify.com/artist/7tLieLkytLqnUldwoKWHEZ](https://open.spotify.com/artist/7tLieLkytLqnUldwoKWHEZ)",
+          "my own project [https://open.spotify.com/artist/73MnOZhjgUyQcHoygEojjW?si=Bll9mIGoSRCkAs5FvxhTlA](https://open.spotify.com/artist/73MnOZhjgUyQcHoygEojjW?si=Bll9mIGoSRCkAs5FvxhTlA)"
+        ]
+      },
+      {
+        "id": "mindfulness",
+        "title": "Mindfulness and meditation",
+        "body": ["I am practicing mindfulness and meditation for over ten years now. Started as an experiment when I was in high school and stuck with me. I am also interested in non violent communication (as described by Marshall Rosenberg)."]
+      },
+      {
+        "id": "dancing",
+        "title": "Dancing",
+        "body": ["I am learning to dance for over a year now. Since I never danced before, this is a cool challenge for me and I enjoy the social aspect of going to a dance party where people [dance like this.](/assets/dancing.mp4) Takes a lot of skill to be able to dance."]
+      },
+      {
+        "id": "fitness",
+        "title": "Fitness",
+        "body": ["I am also regularly going to gym. I must admit, my main motivation to go to the gym was to look big at first. Now I focus mostly on longevity and fitness (high HRV, big muscle mass for higher metabolic rate and better aging)."]
+      }
+    ]
+  },
+
+  "contact": {
+    "id": "contact",
+    "title": "Get in touch",
+    "intro": "Want to chat about a project, collaboration or just say hi?",
+    "nostrLabel": "My nostr identity:",
+    "npub": "npub1vl2dxs8w7hc6778lsgl6m6szayj2efxemnsus9pmzfeecxpuhtqqpm0kke",
+    "emailLabel": "My email:",
+    "email": "mail@davenov.com",
+    "socialLabel": "My social accounts:",
+    "github": { "label": "github.com/kaladivo", "url": "https://github.com/kaladivo" },
+    "instagram": { "label": "instagram.com/dejv.iclasky", "url": "https://www.instagram.com/dejv.iclasky/" }
+  }
+}
