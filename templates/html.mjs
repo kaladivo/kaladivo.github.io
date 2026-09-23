@@ -4,6 +4,9 @@ export const indent = (html, spaces) => html.replace(/\n(?=.)/g, "\n" + " ".repe
 
 export const link = (label, url) => `<a href="${url}">${label}</a>`;
 
+// For pages that don't link to the dancing video: the album embeds it, the CV skips it.
+export const linkWithoutVideo = (label, url) => (url.endsWith(".mp4") ? label : link(label, url));
+
 export const externalLink = (label, url) => `<a href="${url}" target="_blank" rel="noopener">${label}</a>`;
 
 const LINK = /\[([^\]]+)\]\(([^)]+)\)/g;

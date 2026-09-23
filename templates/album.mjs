@@ -1,9 +1,6 @@
-import { blocks, contact, esc, indent, inline, link, media } from "./html.mjs";
+import { blocks, contact, esc, indent, inline, linkWithoutVideo, media } from "./html.mjs";
 
-// The dancing video plays inline next to its text, so the album drops that link.
-const renderLink = (label, url) => (url.endsWith(".mp4") ? label : link(label, url));
-
-const body = (item) => blocks(item.body, { renderLink, quote: (html) => `<blockquote><p>${html}</p></blockquote>` });
+const body = (item) => blocks(item.body, { renderLink: linkWithoutVideo, quote: (html) => `<blockquote><p>${html}</p></blockquote>` });
 
 const counter = (side) => {
   let n = 0;

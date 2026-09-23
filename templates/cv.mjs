@@ -1,4 +1,4 @@
-import { blocks, contact, esc, indent, inline } from "./html.mjs";
+import { blocks, contact, esc, indent, inline, linkWithoutVideo } from "./html.mjs";
 
 const meta = (item) => {
   if (item.dates)
@@ -13,7 +13,7 @@ const linksParagraph = (links) => `<p class="links">
 
 const article = (item, head, tail) => `    <article>
       <h3>${esc(item.title)}</h3>
-      ${indent([head, blocks(item.body), tail].filter(Boolean).join("\n"), 6)}
+      ${indent([head, blocks(item.body, { renderLink: linkWithoutVideo }), tail].filter(Boolean).join("\n"), 6)}
     </article>`;
 
 const articles = (items) => items.map((item) => article(item, meta(item))).join("\n\n");
